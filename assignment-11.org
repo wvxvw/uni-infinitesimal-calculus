@@ -84,7 +84,89 @@
       #+END_SRC
 
 *** Answer 1
+    *Discussion:* The idea behind the proof is to show that ${2n \choose n}$ is
+    a term in the binomial expansion representing $4^n$.  Since all other terms
+    in this expansion will be non-negative, then $4^n$ will be at least as big
+    as ${2n \choose n}$.
+
+    *Proof:* Put $4^n=(1+1)^{2n}$, using binomial formula obtains:
+    #+HEADER: :exports results
+    #+HEADER: :results (by-backend (pdf "latex") (t "raw"))
+    #+BEGIN_SRC latex
+      \begin{align*}
+        (1+1)^{2n} &= \sum_{k=0}^{2n} {2n \choose k}1^{2n}1^{2n-k} \\
+                  &= {2n \choose n} + \sum_{k=0, k\neq n}^{2n} {2n \choose k}.
+      \end{align*}
+    #+END_SRC
+    We know that ${2n \choose n}$ is a term of binomial expansion because we
+    know that $k_i \leq 2n$, which implies that since $k_i, n$ are natural numbers,
+    there exists $k_i = n$.  Besides, thre might exist other terms in binomial
+    expansion which are guaranteed to be non-negative.  Hence,
+    $4^n \geq {2n \choose n}$.
+
 *** Answer 2
+    *Discussion:* In order to make the proof a little less verbose, I will prove
+    a stronger claim, viz. ${2n \choose n} \geq \frac{4^n}{2n}$.  Since $n$ is
+    positive, $2n < 2n +1$, hence $\frac{4^n}{2n} > \frac{4^n}{2n + 1}$.  The
+    proof will proceed by induction on $n$.  First I will find a factor s.t.
+    multiplying it with $S_{n-1}$ I will obtain $S_n$, and then multiply it
+    with the $\frac{4^n}{2n}$ to show that it will necessary be at leas as large
+    as $\frac{4^{n+1}}{2(n+1)}$.
+
+    *Proof:* Using mathematical induction, let's first prove the base step,
+    where $n=1$:
+    #+HEADER: :exports results
+    #+HEADER: :results (by-backend (pdf "latex") (t "raw"))
+    #+BEGIN_SRC latex
+      \begin{align*}
+        { 2*1 \choose 1}    &\geq \frac{4^1}{2*1} \iff \\
+        \frac{2!}{1!(2-1)!} &\geq \frac{4}{2} \iff \\
+        \frac{2}{1}         &\geq 2 \iff \\
+        2                   &\geq 2.
+      \end{align*}
+    #+END_SRC
+
+    Now, to the inductive step (for $n>1$), some useful simplification first:
+    #+HEADER: :exports results
+    #+HEADER: :results (by-backend (pdf "latex") (t "raw"))
+    #+BEGIN_SRC latex
+      \begin{equation}
+        \begin{aligned}
+          {2n \choose n} &= \frac{(2n)!}{n!(2n - n)!} \\
+          &= \frac{(2n!)}{n!n!}. \\
+        \end{aligned}
+      \end{equation}
+    #+END_SRC
+    Invoking inductive hypothesis ${2(n+1) \choose (n+1)} \geq \frac{4^n}{2n}$:
+    #+HEADER: :exports results
+    #+HEADER: :results (by-backend (pdf "latex") (t "raw"))
+    #+BEGIN_SRC latex
+      \begin{equation}
+        \begin{aligned}
+          {2(n+1) \choose n+1} &= \frac{(2(n+1))!}{(n+1)!(2(n+1) - n+1)!} \\
+          &= \frac{(2n!)(2n+1)(2n+2)}{n!(n+1)n!(n+1)} \\
+          &= \frac{(2n!)(2n+1)2(n+1)}{n!(n+1)n!(n+1)} \\
+          &= \frac{(2n!)(2n+1)2}{n!n!(n+1)}.
+        \end{aligned}
+      \end{equation}
+    #+END_SRC
+    Dividing (2) by (1) gives us the factor $\frac{(2n+1)2}{(n+1)}$. Thus:
+    #+HEADER: :exports results
+    #+HEADER: :results (by-backend (pdf "latex") (t "raw"))
+    #+BEGIN_SRC latex
+      \begin{align*}
+        \frac{(2n+1)2}{n+1} \times \frac{4^n}{2n} &\geq \frac{4^{n+1}}{2(n+1)} \\
+        \frac{(2n+1)2*4^n}{2n(n+1)} &\geq \frac{4^{n+1}}{2(n+1)} \\
+        \frac{(2n+1)2*4^n}{n} &\geq 4^{n+1} \\
+        \frac{(2n+1)2*4^n}{n} &\geq 4^{n}*4 \\
+        \frac{(2n+1)2}{n} &\geq 4 \\
+        \frac{4n+2}{n} &\geq 4 \\
+        4 + \frac{2}{n} &\geq 4 \\
+      \end{align*}
+    #+END_SRC
+    Since $n > 1$, $\frac{2}{n}$ is positive, hence the inequality holds.
+    This completes the inductive step.  Hence, by using mathematical induction
+    the proof is complete.
 
 ** Problem 2
    1. Given $k, l \in \mathbb{N}$, prove that $a=k+l\sqrt{2}$ is irrational.
