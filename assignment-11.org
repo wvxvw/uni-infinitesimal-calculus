@@ -135,6 +135,7 @@
           {2n \choose n} &= \frac{(2n)!}{n!(2n - n)!} \\
           &= \frac{(2n!)}{n!n!}. \\
         \end{aligned}
+        \label{eq:base}
       \end{equation}
     #+END_SRC
     Invoking inductive hypothesis ${2(n+1) \choose (n+1)} \geq \frac{4^n}{2n}$:
@@ -148,9 +149,10 @@
           &= \frac{(2n!)(2n+1)2(n+1)}{n!(n+1)n!(n+1)} \\
           &= \frac{(2n!)(2n+1)2}{n!n!(n+1)}.
         \end{aligned}
+        \label{eq:step}
       \end{equation}
     #+END_SRC
-    Dividing (2) by (1) gives us the factor $\frac{(2n+1)2}{(n+1)}$. Thus:
+    Dividing $\ref{eq:step}$ by $\ref{eq:base}$ gives us the factor $\frac{(2n+1)2}{(n+1)}$. Thus:
     #+HEADER: :exports results
     #+HEADER: :results (by-backend (pdf "latex") (t "raw"))
     #+BEGIN_SRC latex
