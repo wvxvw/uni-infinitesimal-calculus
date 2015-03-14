@@ -1,0 +1,165 @@
+# -*- fill-column: 80; org-confirm-babel-evaluate: nil -*-
+
+#+TITLE:     Assignment 11, Infinitesimal Calculus
+#+AUTHOR:    Oleg Sivokon
+#+EMAIL:     olegsivokon@gmail.com
+#+DATE:      <2015-03-14 Sat>
+#+DESCRIPTION: First asssignment in the course Infinitesimal Calculus
+#+KEYWORDS: Infinitesimal Calculus, Assignment, Properties of Numbers
+#+LANGUAGE: en
+#+LaTeX_CLASS: article
+#+LATEX_HEADER: \usepackage[usenames,dvipsnames]{color}
+#+LATEX_HEADER: \usepackage[backend=bibtex, style=numeric]{biblatex}
+#+LATEX_HEADER: \usepackage{commath}
+#+LATEX_HEADER: \usepackage{tikz}
+#+LATEX_HEADER: \usetikzlibrary{shapes,backgrounds}
+#+LATEX_HEADER: \usepackage{marginnote}
+#+LATEX_HEADER: \usepackage{listings}
+#+LATEX_HEADER: \usepackage{color}
+#+LATEX_HEADER: \usepackage{enumerate}
+#+LATEX_HEADER: \hypersetup{urlcolor=blue}
+#+LATEX_HEADER: \hypersetup{colorlinks,urlcolor=blue}
+#+LATEX_HEADER: \addbibresource{bibliography.bib}
+#+LATEX_HEADER: \setlength{\parskip}{16pt plus 2pt minus 2pt}
+#+LATEX_HEADER: \definecolor{codebg}{rgb}{0.96,0.99,0.8}
+#+LATEX_HEADER: \definecolor{codestr}{rgb}{0.46,0.09,0.2}
+
+#+BEGIN_SRC emacs-lisp :exports none
+(setq org-latex-pdf-process
+        '("latexmk -pdflatex='pdflatex -shell-escape -interaction nonstopmode' -pdf -bibtex -f %f")
+        org-latex-listings t
+        org-src-fontify-natively t
+        org-babel-latex-htlatex "htlatex")
+(defmacro by-backend (&rest body)
+    `(cl-case (when (boundp 'backend) (org-export-backend-name backend))
+       ,@body))
+#+END_SRC
+
+#+RESULTS:
+: by-backend
+
+#+BEGIN_LATEX
+  \lstset{ %
+    backgroundcolor=\color{codebg},
+    basicstyle=\ttfamily\scriptsize,
+    breakatwhitespace=false,         % sets if automatic breaks should only happen at whitespace
+    breaklines=false,
+    captionpos=b,                    % sets the caption-position to bottom
+    commentstyle=\color{mygreen},    % comment style
+    framexleftmargin=10pt,
+    xleftmargin=10pt,
+    framerule=0pt,
+    frame=tb,                        % adds a frame around the code
+    keepspaces=true,                 % keeps spaces in text, useful for keeping indentation of code (possibly needs columns=flexible)
+    keywordstyle=\color{blue},       % keyword style
+    showspaces=false,                % show spaces everywhere adding particular underscores; it overrides 'showstringspaces'
+    showstringspaces=false,          % underline spaces within strings only
+    showtabs=false,                  % show tabs within strings adding particular underscores
+    stringstyle=\color{codestr},     % string literal style
+    tabsize=2,                       % sets default tabsize to 2 spaces
+  }
+#+END_LATEX
+
+\clearpage
+
+* Problems
+
+** Problem 1
+   1. Prove that for any natural number $n$ it holds that:
+      #+HEADER: :exports results
+      #+HEADER: :results (by-backend (pdf "latex") (t "raw"))
+      #+BEGIN_SRC latex
+        \begin{equation*}
+          4^n \geq {2n \choose n}.
+        \end{equation*}
+      #+END_SRC
+   2. Prove by induction, or in any other way, that for any natural number $n$
+      it holds that:
+      #+HEADER: :exports results
+      #+HEADER: :results (by-backend (pdf "latex") (t "raw"))
+      #+BEGIN_SRC latex
+        \begin{equation*}
+           {2n \choose n} \geq \frac{4^n}{2n+1}.
+        \end{equation*}
+      #+END_SRC
+
+*** Answer 1
+*** Answer 2
+
+** Problem 2
+   1. Given $k, l \in \mathbb{N}$, prove that $a=k+l\sqrt{2}$ is irrational.
+   2. Prove that for every natural number $n$ it holds that:
+      #+HEADER: :exports results
+      #+HEADER: :results (by-backend (pdf "latex") (t "raw"))
+      #+BEGIN_SRC latex
+        \begin{equation*}
+           \sum_{i=0}^n \sqrt{2}^i
+        \end{equation*}
+      #+END_SRC
+      is irrational.
+
+*** Answer 3
+*** Answer 4
+
+** Problem 3
+   1. Given real numbers $a$ and $b$ prove that if
+      #+HEADER: :exports results
+      #+HEADER: :results (by-backend (pdf "latex") (t "raw"))
+      #+BEGIN_SRC latex
+        \begin{equation*}
+           \frac{\abs{a}}{2}>\abs{b-\frac{a}{2}},
+        \end{equation*}
+      #+END_SRC
+      then
+      #+HEADER: :exports results
+      #+HEADER: :results (by-backend (pdf "latex") (t "raw"))
+      #+BEGIN_SRC latex
+        \begin{equation*}
+           \abs{b-a}<\abs{a}.
+        \end{equation*}
+      #+END_SRC
+
+*** Answer 5
+** Problem 4
+   Given $a, b, c \in \mathbb{R}$,
+   1. Prove that if $a > 0$ and $a + b > a + c$, then $b > c$.
+   2. Prove that if $a > 0$ and $ab > ac$, then $b > c$.
+   3. Prove that if $\abs{a} > \abs{b}$ iff $a^2 > b^2$.
+   4. Prove that if $b > c$ and $\abs{a-b} > \abs{a-c}$, then $b > a$.
+   5. Show (my means of example) that from $b > c$ and $b > a$ it doesn't
+      follow that $\abs{a-b} > \abs{a-c}$.
+
+*** Answer 6
+*** Answer 7
+*** Answer 8
+*** Answer 9
+*** Answer 10
+
+** Problem 5
+   Solve the equation:
+   #+HEADER: :exports results
+   #+HEADER: :results (by-backend (pdf "latex") (t "raw"))
+   #+BEGIN_SRC latex
+     \begin{equation*}
+        \lfloor \abs{x+1}-\abs{x-1} \rfloor = x.
+     \end{equation*}
+   #+END_SRC
+   
+*** Answer 11
+
+** Problem 6
+   *Definition:* set $A$ of real numbers is called *dense in interval* $I$ if
+   for every $x, y \in I$ s.t. $x < y$ there exists $a \in A$ such that
+   $x < a < y$.
+
+   1. Let $A$ be dense in interval $[0,1]$, prove that set 
+      $B=\{na|a \in A, n \in \mathbb{N}\}$ is dense in interval $[0, \infty)$.
+   2. Let $A=\mathbb{R}$, prove that $A$ isn't dense in $I$ iff exists an
+      open interval $(x, y)$ in $I$, such that $A \cap (x, y) = \emptyset$.
+   3. Let $A$ be the real numbers in interval $[0,1]$, prove that the set
+      $C=\{\frac{a+1}{n^2} | a \in A, n \in \mathbb{N}\}$ isn't dense in
+      $[0,1]$.
+
+*** Answer 12
+*** Answer 13
+*** Answer 14

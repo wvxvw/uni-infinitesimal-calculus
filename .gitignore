@@ -1,0 +1,7 @@
+*~
+*.fls
+*.run.xml
+*_latexmk
+*blx.bib
+*.bbl
+*.blg
