@@ -100,7 +100,7 @@
     #+END_SRC
     We know that ${2n \choose n}$ is a term of binomial expansion because we
     know that $k_i \leq 2n$, which implies that since $k_i, n$ are natural numbers,
-    there exists $k_i = n$.  Besides, thre might exist other terms in binomial
+    there exists $k_i = n$.  Besides, there might exist other terms in binomial
     expansion which are guaranteed to be non-negative.  Hence,
     $4^n \geq {2n \choose n}$.
 
@@ -183,7 +183,66 @@
       is irrational.
 
 *** Answer 3
+    *Discussion:* One way to see that summation of rational with irrational
+    cannot produce a rational number is through invoking field axioms: summation
+    must send the sum to the field of rationals, which would imply that the
+    inverses of summands must be rationals too.  This would also require summands
+    to be rationals, but that's not possible.
+    
+    *Proof:* Suppose, for contradiction that $k+l\sqrt{2}=a$ is rational, then
+    #+HEADER: :exports results
+    #+HEADER: :results (by-backend (pdf "latex") (t "raw"))
+    #+BEGIN_SRC latex
+      \begin{equation*}
+        \begin{aligned}
+          k+l\sqrt{2} &= a & \textrm{Given} \\
+          k+(-k)+l\sqrt{2} &= a-k &
+          \textrm{$k$ must have additive inverse in $\mathbb{Q}$} \\
+          0+l\sqrt{2} &= a-k \\
+          l^{-1}l\sqrt{2} &= l^{-1}(a-k) &
+          \textrm{$l$ must have multiplicative inverse in $\mathbb{Q}$} \\
+          1\sqrt{2} &= l^{-1}(a-k) \\
+          \sqrt{2} &= l^{-1}(a-k).
+        \end{aligned}
+      \end{equation*}
+    #+END_SRC
+    
+    $l^{-1}, q$ and $k$ are all rationals, rationals are closed under multiplication
+    and addition, hence $l^{-1}(q-k)$ must be rational, but $\sqrt{2}$ is not.
+    Contradiction.  Hence $a=k+l\sqrt{2}$ is irrational.
+    
 *** Answer 4
+    *Discussion:* The way to see that this statement is true is to divide the sequence
+    into odd and even terms.  All even terms will produce rationals (even poverse of
+    square root of two will be rational).  While all odd terms will produce irrational
+    numbers (a product of even number of square roots of two will give a rational, but
+    them multiplied with an irrational number will give an irrational).  Since $n$
+    must be at least one (and thus we are guaranteed to have at least one odd term in
+    this sequence), the sum of the sequence will always be irrational.
+
+    *Proof:* Let's rewrite this sum as two sums of the form:
+    #+HEADER: :exports results
+    #+HEADER: :results (by-backend (pdf "latex") (t "raw"))
+    #+BEGIN_SRC latex
+      \begin{equation*}
+        \sum_{i=0}^{\lfloor n/2 \rfloor} \sqrt{2}^{2i} +
+        \sum_{i=0}^{\lfloor (n+1)/2 \rfloor} \sqrt{2}^{2i+1}.
+      \end{equation*}
+    #+END_SRC
+    It is easy to see that the first term is a sum of powers of 2, viz:
+    $\sqrt{2}^2+\sqrt{2}^4+\hdots+\sqrt{2}^{\lfloor n/2 \rfloor}$, which is just
+    $2+4+\hdots+2^{\lfloor n/2-1 \rfloor}$.  Similarly, the terms of the other
+    sum can be expressed as $\sqrt{2}^1+\sqrt{2}^3+\hdots+\sqrt{2}^{\lfloor (n+1)/2 \rfloor}$.
+
+    Let's give names to the sequences we outlined:
+    $S_1=\sum_{i=0}^{\lfloor n/2 \rfloor} \sqrt{2}^{2i}$ and
+    $S_2=\sum_{i=0}^{\lfloor (n+1)/2 \rfloor} \sqrt{2}^{2i+1}$.  Now, for contradiction,
+    assume $S_2$ to be rational.  Then
+    $S_2-S_3=\sum_{i=0}^{\lfloor (n+1)/2 \rfloor} \sqrt{2}$, i.e. a sum of $n/2$
+    square roots of 2, which is the same as $n/2*\sqrt{2}$, but we've just showed that
+    a product of a rational and irrational cannot be rational (in previous question).
+    Hence $S_2$ must be irrational, contrary to assumed.  Hence it must be that
+    $\sum_{i=0}^n \sqrt{2}^i$ is irrational.  This completes the proof.
 
 ** Problem 3
    1. Given real numbers $a$ and $b$ prove that if
