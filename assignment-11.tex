@@ -1,4 +1,4 @@
-% Created 2015-03-15 Sun 22:21
+% Created 2015-03-17 Tue 11:34
 \documentclass[11pt]{article}
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
@@ -213,17 +213,28 @@ this sequence), the sum of the sequence will always be irrational.
 It is easy to see that the first term is a sum of powers of 2, viz:
 $\sqrt{2}^2+\sqrt{2}^4+\hdots+\sqrt{2}^{\lfloor n/2 \rfloor}$, which is just
 $2+4+\hdots+2^{\lfloor n/2-1 \rfloor}$.  Similarly, the terms of the other
-sum can be expressed as $\sqrt{2}^1+\sqrt{2}^3+\hdots+\sqrt{2}^{\lfloor (n+1)/2 \rfloor}$.
+sum can be expressed as $\sqrt{2}^1+\sqrt{2}^3+\hdots+\sqrt{2}^{\lfloor
+    (n+1)/2 \rfloor}$.
 
-Let's give names to the sequences we outlined:
-$S_1=\sum_{i=0}^{\lfloor n/2 \rfloor} \sqrt{2}^{2i}$ and
-$S_2=\sum_{i=0}^{\lfloor (n+1)/2 \rfloor} \sqrt{2}^{2i+1}$.  Now, for contradiction,
-assume $S_2$ to be rational.  Then
-$S_2-S_3=\sum_{i=0}^{\lfloor (n+1)/2 \rfloor} \sqrt{2}$, i.e. a sum of $n/2$
-square roots of 2, which is the same as $n/2*\sqrt{2}$, but we've just showed that
-a product of a rational and irrational cannot be rational (in previous question).
-Hence $S_2$ must be irrational, contrary to assumed.  Hence it must be that
-$\sum_{i=0}^n \sqrt{2}^i$ is irrational.  This completes the proof.
+Let's give names to the sequences we outlined: $S_1=\sum_{i=0}^{\lfloor n/2
+    \rfloor} \sqrt{2}^{2i}$ and $S_2=\sum_{i=0}^{\lfloor (n+1)/2 \rfloor}
+    \sqrt{2}^{2i+1}$.  Now, for contradiction, assume $S_2$ to be rational.
+Then let's define $\div$ to be the element-wise division of sequences,
+i.e. for sequences $A$ and $B$ of length $n$, $\div$ is defined to be:
+\begin{equation*}
+  \sum_{i=0}^n \frac{A_i}{B_i}.
+\end{equation*}
+
+It's easy to see that if all elements of $A$ and $B$ are rational, then $A
+    \div B$ is rational too (because we only used addition and multiplication,
+which are known to be closed over rationals).
+
+Observe that $S_2 \div S_3=\sum_{i=0}^{\lfloor (n+1)/2 \rfloor} \sqrt{2}$,
+i.e. a sum of $n/2$ square roots of 2, which is the same as $n/2*\sqrt{2}$,
+but we've just showed that the product of a rational and irrational cannot be
+rational (in previous question). Hence $S_2$ must be irrational, contrary to
+assumed.  Hence it must be that $\sum_{i=0}^n \sqrt{2}^i$ is irrational.
+This completes the proof.
 \subsection{Problem 3}
 \label{sec-1-3}
 \begin{enumerate}
@@ -240,7 +251,52 @@ then
 
 \subsubsection{Answer 5}
 \label{sec-1-3-1}
+\textbf{Discussion:} The proof will be based on invariance of order under multiplication,
+in particular, it will rely on the fact that $\abs{x} < \abs{y} \iff x^2 < y^2$.
+This will allow us to solve the inequality without splitting it into several
+cases.
 
+\textbf{Proof:} First, let's simplify the expression:
+\begin{equation*}
+  \begin{aligned}
+    \frac{\abs{a}}{2} &> \abs{b-\frac{a}{2}} 
+    & \textrm{Given} \\
+    \abs{a}           &> 2\abs{b-\frac{a}{2}}
+    & \textrm{Invariance of order under multiplication} \\
+    \abs{a}           &> \abs{2b-a}
+    & \textrm{Distributivity of multiplication over addition} \\
+    \abs{2b-a}        &< \abs{a} \\
+    \abs{2b-a}^2      &< \abs{a}^2
+    & \textrm{Invariance under exponentiation} \\
+    (2b-a)^2          &< a^2
+    & \textrm{Squares are always positive} \\
+    4b^2 - 4ba + a^2  &< a^2 \\
+    4b^2 - 4ba        &< 0 \\
+    4b^2              &< 4ba \\
+    b^2               &< ba
+    & \textrm{Invariance under multiplication}
+  \end{aligned}
+\end{equation*}
+
+Next, let's perform similar operations on $\abs{b-a}<\abs{a}$
+\begin{equation*}
+  \begin{aligned}
+    \abs{b - a}     &< \abs{a}
+    & \textrm{Given} \\
+    \abs{b - a}^2   &< \abs{a}^2
+    & \textrm{Invariance under exponentiation} \\
+    (b - a)^2       &< a^2
+    & \textrm{Squares are always positive} \\
+    b^2 - 2ba + a^2 &< a^2 \\
+    b^2 - 2ba       &< 0 \\
+    b^2             &< 2ba.
+    \end{aligned}
+\end{equation*}
+
+
+From transitivity of order it follows that $b^2 < ba < 2ba$, i.e.
+$b^2 < 2ba$, but this is exactly the condition we set out to prove in the
+very beginning.  Thus, the proof is complete.
 \subsection{Problem 4}
 \label{sec-1-4}
 Given $a, b, c \in \mathbb{R}$,
