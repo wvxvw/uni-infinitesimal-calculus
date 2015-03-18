@@ -335,16 +335,108 @@
    Given $a, b, c \in \mathbb{R}$,
    1. Prove that if $a > 0$ and $a + b > a + c$, then $b > c$.
    2. Prove that if $a > 0$ and $ab > ac$, then $b > c$.
-   3. Prove that if $\abs{a} > \abs{b}$ iff $a^2 > b^2$.
+   3. Prove that $\abs{a} > \abs{b}$ iff $a^2 > b^2$.
    4. Prove that if $b > c$ and $\abs{a-b} > \abs{a-c}$, then $b > a$.
    5. Show (my means of example) that from $b > c$ and $b > a$ it doesn't
       follow that $\abs{a-b} > \abs{a-c}$.
 
 *** Answer 6
+    *Proof:* The proof is simple algebra relying on invariance of order
+    under addition:
+    #+HEADER: :exports results
+    #+HEADER: :results (by-backend (pdf "latex") (t "raw"))
+    #+BEGIN_SRC latex
+      \begin{equation*}
+        \begin{aligned}
+          a+b    &> a+c    & \textrm{Given} \\
+          -a+a+b &> -a+a+c & \textrm{Invariance under addition} \\
+          0+b    &> 0+c    & \textrm{Devinition of inverse} \\
+          b      &> c      & \textrm{Devinition of inverse}
+        \end{aligned}
+      \end{equation*}
+    #+END_SRC
+    
 *** Answer 7
+    *Proof:* The proof is simple algebra relying on invariance of order
+    under multiplication:
+    #+HEADER: :exports results
+    #+HEADER: :results (by-backend (pdf "latex") (t "raw"))
+    #+BEGIN_SRC latex
+      \begin{equation*}
+        \begin{aligned}
+          ab       &> ac      & \textrm{Given} \\
+          a^{-1}ab &> a^{-1}ac & \textrm{Invariance under multiplication} \\
+          1b       &> 1c      & \textrm{Devinition of inverse} \\
+          b        &> c       & \textrm{Devinition of inverse}
+        \end{aligned}
+      \end{equation*}
+    #+END_SRC
+    
 *** Answer 8
+    *Proof:* first I will prove the implies part, i.e.
+    $\abs{a} > \abs{b} \implies a^2 > b^2$, and then the
+    $\abs{a} > \abs{b} \impliedby a^2 > b^2$:
+    #+HEADER: :exports results
+    #+HEADER: :results (by-backend (pdf "latex") (t "raw"))
+    #+BEGIN_SRC latex
+      \begin{equation*}
+        \begin{aligned}
+          \abs{a}        &> \abs{b}      & \textrm{Given} \\
+          \abs{a}\abs{a} &> \abs{a}\abs{b} & \textrm{Invariance under multiplication} \\
+          a^2            &> \abs{ab} & \textrm{Simple algebra} \\
+          \abs{a}        &> \abs{b} & \textrm{Reiteration of the given} \\
+          \abs{a}\abs{b} &> \abs{b}\abs{b} & \textrm{Invariance under multiplication} \\
+          \abs{ab}       &> b^2 & \textrm{Simple algebra} \\
+          a^2 > \abs{ab} &> b^2 & \textrm{Reusing derivation from step 3} \\
+          a^2            &> b^2 & \textrm{By transitivity of order}
+        \end{aligned}
+      \end{equation*}
+    #+END_SRC
+    The converse proof:
+    #+HEADER: :exports results
+    #+HEADER: :results (by-backend (pdf "latex") (t "raw"))
+    #+BEGIN_SRC latex
+      \begin{equation*}
+        \begin{aligned}
+          a^2 > b^2
+          \abs{a}\abs{a} &> \abs{b}\abs{b} & \textrm{Simple algebra} \\
+          \abs{a}\abs{a} - \abs{b}\abs{b} &> 0 & \textrm{Simple algebra} \\
+          \abs{a}(\abs{b} + c) - \abs{b}\abs{b} &> 0 & \textrm{Define $c=\abs{a}-\abs{b}$} \\
+          \abs{a}\abs{b} + \abs{a}c - \abs{b}\abs{b} &> 0 \\
+          (\abs{a} - \abs{b})\abs{b} + \abs{a}c &> 0 \\
+          (\abs{a} - \abs{b})\abs{b} &> -\abs{a}c \\
+          (\abs{a} - \abs{b})\abs{b} &> -\abs{a}(\abs{a}-\abs{b})
+          & \textrm{Recall $c=\abs{a}-\abs{b}$} \\
+          \abs{b} &> -\abs{a} & \textrm{Invariance under multiplication} \\
+          -\abs{a} &< \abs{b} \\
+          \abs{a} &> \abs{b} & \textrm{Multiplying by $-1$}
+        \end{aligned}
+      \end{equation*}
+    #+END_SRC
+    Both the ``if'' part and its converse have been proved, thus the proof is complete.
+    
 *** Answer 9
+    *Proof:* For the sake of diversity, this proof will rely on axioms rather
+    than algebraic manipulations.  Perusing the first axiom of order, we know
+    that either one of the three holds: $c < a$, $c = a$ or $c > a$.  Consider
+    $c < a$.  We are given that the distance from $a$ to $b$ is greater than the
+    distance from $a$ to $c$.  This means that $b$ cannot lie between $a$ and
+    $c$ (recall the triangle inequality), neither can it lie between $c$ and $a$
+    if $a = c$, hence $b > a$.
+
+    Consider now $c > a$, we are given that $b > c$, thus, by transitivity of
+    order we conclude that $b > c > a$ and in particular $b > a$.  This
+    completes the proof.
+
 *** Answer 10
+    Any combination of $a, b$ and $c$ s.t. $c > a > b$ and $a - c > b - a$ will
+    satisfy the requirement, and in particular $c=1, a=3, b=4$ as is easy to
+    see: $\abs{a-b}>\abs{a-c}\implies\abs{3-4}>\abs{3-1}\implies 1 > 2$.
+    A way to see why this is true is to picture the number line, where
+    the distance is measured from the central point $a$ to two points on
+    the left and on the right of it.  We aren't constrained in any way as
+    to which side should be bigger, thus we can certainly obtain the one
+    that fits the requirement.
 
 ** Problem 5
    Solve the equation:
