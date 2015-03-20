@@ -1,4 +1,4 @@
-% Created 2015-03-18 Wed 23:42
+% Created 2015-03-20 Fri 20:40
 \documentclass[11pt]{article}
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
@@ -405,6 +405,49 @@ Solve the equation:
 
 \subsubsection{Answer 11}
 \label{sec-1-5-1}
+\textbf{Discussion:} First, observer that flooring on the left side guarantees
+that $x$ is an integer.  Having said that, we can drop the flooring operation
+altogether.  The solution will examine three cases of $x < 0$, $x = 0$ and
+$x > 0$ warranted by the first axiom of order.
+
+\textbf{Case} $x=0$: 
+\begin{equation*}
+  \begin{aligned}
+    \abs{x+1}-\abs{x-1}-x &= 0 \\
+    0 + 1 - 0 - 1 - 0     &= 0 \\
+    0                     &= 0
+  \end{aligned}
+\end{equation*}
+
+Substituting 0 back into original formula proves to give a correct identity.
+
+\textbf{Case} $x>0$:
+\begin{equation*}
+  \begin{aligned}
+    \abs{x + 1} - \abs{x - 1} - x &= 0 \\
+    x + 1 - \abs{x - 1} - x       &= 0 \\
+    1 - \abs{x - 1}               &= 0 \\
+    1 - x + 1                     &= 0 \\
+    x                             &= 2
+  \end{aligned}
+\end{equation*}
+
+Substituting 2 back into equation gives $\abs{2+1}-\abs{2-1}=3-1=2$, this
+we obtained additional solution.
+
+\textbf{Case} $x<0$:
+\begin{equation*}
+  \begin{aligned}
+    \abs{x + 1} - \abs{x - 1} - x &= 0 \\
+    x + 1 - \abs{x - 1} - x       &= 0 \\
+    1 - \abs{x - 1}               &= 0 \\
+    1 - x + 1                     &= 0 \\
+    x                             &= 2
+  \end{aligned}
+\end{equation*}
+
+But we started with the assumpion that $x<0$, thus there are no solutions
+for $x<0$.  Hence the only solutions are 0 and 2.
 \subsection{Problem 6}
 \label{sec-1-6}
 \textbf{Definition:} set $A$ of real numbers is called \textbf{dense in interval} $I$ if
