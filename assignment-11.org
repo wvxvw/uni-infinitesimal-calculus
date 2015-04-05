@@ -517,5 +517,91 @@
       $[0,1]$.
 
 *** Answer 12
+    *Discussion:* One way to see why this statement is true, is to observe that
+    multiplication is one-to-one and it preserves order, so for any pair of
+    numbers chosen from the set $A$ the order will remain the same after
+    multiplication.  But I will give an algebraic proof to reinforce this idea
+    by simple manipulations on formulae.  The observation used in the proof is
+    essentially the same as the discussion given above, but it is less
+    general---it chooses a concrete number between two arbitrary chosen $x$ and
+    $y$, exactly, $\frac{x+y}{2}$, but it would work for any number between $x$
+    and $y$, provided $x<y$.
+
+    *Proof:* First, I will restate the problem more formally to allow
+    mechanical manipulations:
+    #+HEADER: :exports results
+    #+HEADER: :results (by-backend (pdf "latex") (t "raw"))
+    #+BEGIN_SRC latex
+      \begin{equation*}
+        \begin{aligned}
+          A &= \{ a | 0 \leq a \leq 1\},
+          \forall x, y \in A: x < y \implies \exists z \in A: x < z < y \\
+          B &= \{ na | a \in A, n \in \mathbb{N} \}
+        \end{aligned}
+      \end{equation*}
+    #+END_SRC
+    Now, for contradiction, assume:
+    #+HEADER: :exports results
+    #+HEADER: :results (by-backend (pdf "latex") (t "raw"))
+    #+BEGIN_SRC latex
+      \begin{equation*}
+        \begin{aligned}
+          \exists x, y \in B: x < y
+          \implies \forall z \in B (z \leq x \lor z \geq y)
+        \end{aligned}
+      \end{equation*}
+    #+END_SRC
+    I.e. we assumed that there exist some pair $x, y$ in $B$, s.t. $x < y$
+    implies that for every $z$ in $B$ $z$ is either smaller or equal to $x$ or
+    greater or equal to $y$.  Choose $z=\frac{x+y}{2}$, let's first show that
+    such $z$ exists.  By definition of $B$, $z=\frac{nx_1+y_1n}{2}$ where
+    $x_1, y_1 \in A$ and $x_1 < y_1$.  By construction of $A$ we know that
+    there are such elements in it ($A$ isn't empty).
+
+    Now, suppose $z \leq x$.  Then
+    #+HEADER: :exports results
+    #+HEADER: :results (by-backend (pdf "latex") (t "raw"))
+    #+BEGIN_SRC latex
+      \begin{equation*}
+        \begin{aligned}
+          z      &= \frac{x + y}{2} \\
+          2z     &= x + y \\
+          2z - y &= x \\
+          z - \frac{y}{2} &= \frac{x}{2}
+        \end{aligned}
+      \end{equation*}
+    #+END_SRC
+    but since $\frac{y}{2} > \frac{x}{2}$ $\frac{z}{2} > \frac{x}{2}$, which
+    in turn implies $z > x$, contrary to assumed $z \leq x$.
+
+    The argument for $z \geq y$ is symmetrical to the one above.  In other
+    words, we found a $z$ s.t. contradicts the basic assumtion of this proof,
+    hence, by contradiction, the proof is complete.
+    
 *** Answer 13
+    *Discussion:* The proof relies on the axiom of completeness of real numbers
+    and equivalence between biconditional and its negation.  (The later isn't
+    true in all logics, but I shall assume a more traditional first-order logic).
+    So, the basic idea is to claim that there are no such intervals in $\mathbb{R}$,
+    hence there are no such $A$ which isn't dense.
+
+    *Proof:* The textbook has a proof of density property of $\mathbb{R}$, which
+    I will not repeat here, so, I will teat it as a fact.  This means that existence
+    of $I$ in $\mathbb{R}$, s.t. it is not a subset of $\mathbb{R}$ is a negation
+    of completeness of reals axiom.  Stated more formally
+    $\exists I \iff \lnot Complete(\mathbb{R})$, using equivalence of biconditional
+    and its negation: $\lnot (\exists I) \iff \lnot \lnot Complete(\mathbb{R})$
+    simplifying gives: $\lnot (\exists I) \iff Complete(\mathbb{R})$.
+
 *** Answer 14
+    *Discussion:* I am not sure whether the question has any deeper meaning,
+    though to disprove the statement exactly as stated, it suffices to find $x, y$
+    outside the range of $I$, for them there would be no $z \in I$ to satisfy
+    the density requirement.  In particular, I can choose $x=\frac{0.5+1}{1}=1.5$,
+    $y=\frac{1+1}{1}=2$.  Then, by transitivity of order, there is no $a \in A$
+    s.t. $x < a < y \land x < y$.
+
+    *Proof:* As discussed above, let $x=1.5$ and $y=2$. 1 is the maximal element
+    of $[0, 1]$, hence $\forall z \in [0, 1]: z < x$, but in order for $C$ to be
+    dense in $[0, 1]$ there has to be $z \in [0, 1]$ s.t. $z > x$.  Since no
+    such $z$ exists, the proof is complete.

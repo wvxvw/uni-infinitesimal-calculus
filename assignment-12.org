@@ -1,0 +1,298 @@
+# -*- fill-column: 80; org-confirm-babel-evaluate: nil -*-
+
+#+TITLE:     Assignment 12, Infinitesimal Calculus
+#+AUTHOR:    Oleg Sivokon
+#+EMAIL:     olegsivokon@gmail.com
+#+DATE:      <2015-04-03 Fri>
+#+DESCRIPTION: Second asssignment in the course Infinitesimal Calculus
+#+KEYWORDS: Infinitesimal Calculus, Assignment, Definition of Limits
+#+LANGUAGE: en
+#+LaTeX_CLASS: article
+#+LATEX_HEADER: \usepackage[usenames,dvipsnames]{color}
+#+LATEX_HEADER: \usepackage[backend=bibtex, style=numeric]{biblatex}
+#+LATEX_HEADER: \usepackage{commath}
+#+LATEX_HEADER: \usepackage{tikz}
+#+LATEX_HEADER: \usetikzlibrary{shapes,backgrounds}
+#+LATEX_HEADER: \usepackage{marginnote}
+#+LATEX_HEADER: \usepackage{listings}
+#+LATEX_HEADER: \usepackage{color}
+#+LATEX_HEADER: \usepackage{enumerate}
+#+LATEX_HEADER: \hypersetup{urlcolor=blue}
+#+LATEX_HEADER: \hypersetup{colorlinks,urlcolor=blue}
+#+LATEX_HEADER: \addbibresource{bibliography.bib}
+#+LATEX_HEADER: \setlength{\parskip}{16pt plus 2pt minus 2pt}
+#+LATEX_HEADER: \definecolor{codebg}{rgb}{0.96,0.99,0.8}
+#+LATEX_HEADER: \definecolor{codestr}{rgb}{0.46,0.09,0.2}
+
+#+BEGIN_SRC emacs-lisp :exports none
+(setq org-latex-pdf-process
+        '("latexmk -pdflatex='pdflatex -shell-escape -interaction nonstopmode' -pdf -bibtex -f %f")
+        org-latex-listings t
+        org-src-fontify-natively t
+        org-babel-latex-htlatex "htlatex")
+(defmacro by-backend (&rest body)
+    `(cl-case (when (boundp 'backend) (org-export-backend-name backend))
+       ,@body))
+#+END_SRC
+
+#+RESULTS:
+: by-backend
+
+#+BEGIN_LATEX
+  \lstset{ %
+    backgroundcolor=\color{codebg},
+    basicstyle=\ttfamily\scriptsize,
+    breakatwhitespace=false,         % sets if automatic breaks should only happen at whitespace
+    breaklines=false,
+    captionpos=b,                    % sets the caption-position to bottom
+    commentstyle=\color{mygreen},    % comment style
+    framexleftmargin=10pt,
+    xleftmargin=10pt,
+    framerule=0pt,
+    frame=tb,                        % adds a frame around the code
+    keepspaces=true,                 % keeps spaces in text, useful for keeping indentation of code (possibly needs columns=flexible)
+    keywordstyle=\color{blue},       % keyword style
+    showspaces=false,                % show spaces everywhere adding particular underscores; it overrides 'showstringspaces'
+    showstringspaces=false,          % underline spaces within strings only
+    showtabs=false,                  % show tabs within strings adding particular underscores
+    stringstyle=\color{codestr},     % string literal style
+    tabsize=2,                       % sets default tabsize to 2 spaces
+  }
+#+END_LATEX
+
+\clearpage
+
+* Problems
+
+** Problem 1
+   1. Prove from definition $\epsilon-N$:
+      #+HEADER: :exports results
+      #+HEADER: :results (by-backend (pdf "latex") (t "raw"))
+      #+BEGIN_SRC latex
+        \begin{equation*}
+          \lim_{n \to \infty} \frac{n^2}{n^2-1} = L.
+        \end{equation*}
+      #+END_SRC
+   2. Prove from definition $M-N$:
+      #+HEADER: :exports results
+      #+HEADER: :results (by-backend (pdf "latex") (t "raw"))
+      #+BEGIN_SRC latex
+        \begin{equation*}
+           \lim_{n \to \infty} \frac{n^2-n}{n+2} = \infty.
+        \end{equation*}
+      #+END_SRC
+   3. Formulate $\lim_{n \to \infty} a_n = \infty$ in terms of $M-N$ definition.
+   4. Prove using the formulation from (3) that:
+      #+HEADER: :exports results
+      #+HEADER: :results (by-backend (pdf "latex") (t "raw"))
+      #+BEGIN_SRC latex
+        \begin{equation*}
+           \lim_{n \to \infty} (n\sqrt{2} + (-1)^n \lfloor \sqrt{n} \rfloor) = \infty.
+        \end{equation*}
+      #+END_SRC
+
+*** Answer 1
+    Recall the definition:
+
+    #+BEGIN_QUOTE
+    Let $(a_n)^{\infty}_{n=1}$ be a sequence, $L$ be a real number.  The
+    *sequence $(a_n)$ converges to $L$* if for all $\epsilon > 0$ almost all
+    elements of the sequence are in the $\epsilon$-neighborhood of $L$.  In such
+    a case we will say $L$ is the *limit of sequence $(a_n)$*.
+    #+END_QUOTE
+
+    To be honest, I don't know what this question is asking me to do.  How can
+    I prove something which is already given in the description of a question?
+    Anyways, I followed the examples in the book, and here is what I think the
+    answer might look like.  Sorry, if this is not what you expect.
+    #+HEADER: :exports results
+    #+HEADER: :results (by-backend (pdf "latex") (t "raw"))
+    #+BEGIN_SRC latex
+      \begin{equation*}
+        \begin{aligned}
+          \epsilon &> 1 \implies & \textit{From definition of reals} \\
+          \epsilon &> \frac{n^2-1}{n^2-1} \implies & \textit{Provided $n \neq 1$} \\
+          \epsilon' &> \frac{1}{n^2-1} \implies & \textit{From Archimedian property} \\
+          \epsilon + \epsilon' &> \frac{n^2}{n^2-1} \implies
+          & \textit{Provided $\epsilon'' = \epsilon' + \epsilon$} \\
+          \epsilon'' &> \abs{\frac{n^2}{n^2-1} - L} & \textit{Provided $0 \leq L \leq 1$}
+        \end{aligned}
+      \end{equation*}
+    #+END_SRC
+    Which completes the ``proof''.
+
+*** Answer 2
+    First, recall the definition:
+
+    #+BEGIN_QUOTE
+    We will say that the sequence $(a_n)^{\infty}_{n=1}$ *tends to infinity*, and
+    write $\lim_{n \to \infty} a_n = \infty$, if for every real number $M$ there
+    exists a natural number $N$ such that for all $n > N$ it holds that $a_n > M$.
+    #+END_QUOTE
+
+    We can start by finding a more convenient formulat to work with, for instance:
+    #+HEADER: :exports results
+    #+HEADER: :results (by-backend (pdf "latex") (t "raw"))
+    #+BEGIN_SRC latex
+      \begin{equation*}
+        \begin{aligned}
+          M &= \frac{n^2 - n}{n + 2} \\
+          &= \frac{n(n - 1)}{n + 2} \\
+          &= \frac{n(n + 2)}{n + 2} - \frac{3n}{n + 2} \\
+          &< n - \frac{3n}{n} \\
+          &= n - 3.
+        \end{aligned}
+      \end{equation*}
+    #+END_SRC
+
+    Now, put $N = M + 3$. Thus for every $M$, $a_n$ is greater than $M$ whenver
+    $n \geq M + 3$.
+
+*** Answer 3
+    I'm confused by this question in the same measure I'm confused by the previous
+    one.  I don't know what do you want me to prove here.  There can be different
+    reasons for why some sequence doesn't tend to infinity.  It could be because
+    it is a divergent series, or because it converges to some real limit, or
+    because it tends to negative infinity.  I can formally negate the statement
+    but I don't think this negation is useful.
+    #+HEADER: :exports results
+    #+HEADER: :results (by-backend (pdf "latex") (t "raw"))
+    #+BEGIN_SRC latex
+      \begin{equation*}
+        \begin{aligned}
+          \lnot \forall M \in \mathbb{R} : \exists N \in \mathbb{N} :
+          \forall n \in \mathbb{N} : (n > N \implies a_n > M) \\
+          \textit{Alternatively:} \\
+          \exists M \in \mathbb{R} : \forall N \in \mathbb{N} :
+          \exists n \in \mathbb{N} : (n > N \implies a_n \leq M)
+        \end{aligned}
+      \end{equation*}
+    #+END_SRC
+
+*** Answer 4
+    It is easy to see that the given sequence is divergent.  It has two limit
+    points, where one is at infinity and another one is at zero.  Since I need
+    to reuse the $M-N$ rule, I will restate this clame in terms of this rule.
+    There exists a real number $M$, such that for every natural number $N$,
+    there exists a natural number $n$, such that whenever $n > N$, $a_n \leq M$.
+    Put $M = 2$, then $a_n = 2(\sqrt{2} + \lfloor \sqrt{2} \rfloor)$.  Now, no matter
+    the $N$, we can always choose $n$ to be odd, which will give us:
+    #+HEADER: :exports results
+    #+HEADER: :results (by-backend (pdf "latex") (t "raw"))
+    #+BEGIN_SRC latex
+      \begin{equation*}
+        \begin{aligned}
+          2\sqrt{2} + \lfloor 2\sqrt{2} \rfloor \geq n\sqrt{2} - \lfloor n\sqrt{2} \rfloor \\
+          \textit{For every $n > 2$} \\
+          2 * 2 + \lfloor 2 * 2 \rfloor \geq n 2 - \lfloor n * 2 \rfloor \\
+          \textit{By axiom of order} \\
+          8 \geq 0.
+        \end{aligned}
+      \end{equation*}
+    #+END_SRC
+
+** Problem 2
+   Calculate the limits of the expression given above, or prove that the limtes don't
+   exists:
+
+   #+HEADER: :exports results
+   #+HEADER: :results (by-backend (pdf "latex") (t "raw"))
+   #+BEGIN_SRC latex
+     \begin{eqnarray}
+       \lim_{n \to \infty} \sqrt{1 + \frac{a}{n}} \\
+       \lim_{n \to \infty} \sqrt{n + a} * \sqrt{n + b} - n \\
+       \lim_{n \to \infty} \frac{n^7 - 2n^4 - 1}{n^4 - 3n^6 + 7} \\
+       \lim_{n \to \infty} \Big(\frac{n}{n + 1} \sum_{k=1}^n \frac{k}{k+1} \Big)
+     \end{eqnarray}
+   #+END_SRC
+
+*** Answer 5
+    Using ``sandwich'' rule we can show that:
+    #+HEADER: :exports results
+    #+HEADER: :results (by-backend (pdf "latex") (t "raw"))
+    #+BEGIN_SRC latex
+      \begin{equation*}
+        \sqrt{1} < \sqrt{1 + \frac{a}{n}} < 1 + \frac{a}{n}
+      \end{equation*}
+    #+END_SRC
+    Provided $a$ is non-negative and isn't equal to $n$.  The limit of $\sqrt{1}$
+    is trivially 1.  The limit of $1 + \frac{a}{n}$ is the sum of the limits of
+    1 and $\frac{a}{n}$, where the former is the limit of a constant (1), and the
+    later is zero.  Thus the value is ``sandwiched'' between 1 and 1, hence it
+    must be 1.
+
+*** Answer 6
+    Let's generalize the expression to reuse the previous case:
+    #+HEADER: :exports results
+    #+HEADER: :results (by-backend (pdf "latex") (t "raw"))
+    #+BEGIN_SRC latex
+      \begin{equation*}
+        \begin{aligned}
+          \lim_{n \to \infty} \sqrt{n + a} * \sqrt{n + b} - n &= \\
+          \lim_{n \to \infty} \sqrt{n(1 + \frac{a}{n})} * \sqrt{n(1 + \frac{b}{n})} - n &= \\
+          \lim_{n \to \infty} n\sqrt{1 + \frac{a}{n}} * \sqrt{1 + \frac{b}{n}} - n &= \\
+          \lim_{n \to \infty} n\Big(\sqrt{1 + \frac{a}{n}} * \sqrt{1 + \frac{b}{n}} - 1\Big)
+        \end{aligned}
+      \end{equation*}
+    #+END_SRC
+    Now, recall that $\lim_{n \to \infty} \sqrt{1 + \frac{a}{n}} = 1$, this gives us:
+    #+HEADER: :exports results
+    #+HEADER: :results (by-backend (pdf "latex") (t "raw"))
+    #+BEGIN_SRC latex
+      \begin{equation*}
+        \begin{aligned}
+          \lim_{n \to \infty} n\Big(\sqrt{1 + \frac{a}{n}} * \sqrt{1 + \frac{b}{n}} - 1\Big) &= \\
+          \lim_{n \to \infty} n * \lim_{n \to \infty}\sqrt{1 + \frac{a}{n}} *
+          \lim_{n \to \infty}\sqrt{1 + \frac{b}{n}} - \lim_{n \to \infty} 1 &= \\
+          lim_{n \to \infty} n * (1 * 1 - 1) &= \\
+          lim_{n \to \infty} n * 0 &= 0.
+        \end{aligned}
+      \end{equation*}
+    #+END_SRC
+
+*** Answer 7
+    
+
+*** Answer 8
+    I will show that the given sequence tentds to infinity.  Some notation first.
+    I will use $H_n$ to denote the /nth/ harmonic numbers.  Let's
+    at first, simplify the sum:
+    #+HEADER: :exports results
+    #+HEADER: :results (by-backend (pdf "latex") (t "raw"))
+    #+BEGIN_SRC latex
+      \begin{equation*}
+        \begin{aligned}
+          \sum_{k=1}^n \frac{k}{k + 1} &= \\
+          \sum_{k=1}^n \frac{k + 1 - 1}{k + 1} &= \\
+          \sum_{k=1}^n \frac{k + 1}{k + 1} - \frac{1}{k + 1} &= \\
+          \sum_{k=1}^n \frac{k + 1}{k + 1} - \sum_{k=1}^n \frac{1}{k + 1} &= \\
+          n - \sum_{k=1}^n \frac{1}{k + 1} &= \\
+          n - \sum_{k=2}^{n+1} \frac{1}{k} &= \\
+          n - H_{n+1} + 1
+        \end{aligned}
+      \end{equation*}
+    #+END_SRC
+    Now, plug this back into our formula:
+    #+HEADER: :exports results
+    #+HEADER: :results (by-backend (pdf "latex") (t "raw"))
+    #+BEGIN_SRC latex
+      \begin{equation*}
+        \begin{aligned}
+          \lim_{n \to \infty} \frac{n}{n + 1} (n - H_{n+1} + 1) &= \\
+          \lim_{n \to \infty} \frac{n}{n + 1} (n - H_{n+1}) + \lim_{n \to \infty}1 &= \\
+          \lim_{n \to \infty} \frac{n}{n + 1} (n - H_{n+1}) + 1 &= \\
+          \lim_{n \to \infty} \Big( \frac{n^2}{n + 1} - \frac{n}{n + 1} H_{n+1} \Big) + 1 &= \\
+          \lim_{n \to \infty} \Big( \frac{n^2 + 1}{n + 1} - \frac{1}{n + 1} -
+          \frac{n}{n + 1} H_{n+1} \Big) + 1 &= \\
+          \lim_{n \to \infty} \Big( \frac{n(n + 1)}{n + 1} - \frac{1}{n + 1} -
+          \frac{n}{n + 1} H_{n+1} \Big) + 1 &= \\
+          \lim_{n \to \infty} \Big( n - \frac{1}{n + 1} - \frac{n}{n + 1} H_{n+1} \Big) + 1 &= \\
+          \lim_{n \to \infty} n - \lim_{n \to \infty} \frac{1}{n + 1} -
+          \lim_{n \to \infty} \frac{n}{n + 1} H_{n+1} + 1 &= \\
+          \lim_{n \to \infty} n - 0 - \lim_{n \to \infty} 1 * H_{n+1} + 1 &= \\
+          \lim_{n \to \infty} n &= \infty.
+        \end{aligned}
+      \end{equation*}
+    #+END_SRC
+    The last step is allowed becasue for all harmonic numbers greater than one
+    it holds that $n > H_{n+1}$.
