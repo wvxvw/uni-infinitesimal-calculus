@@ -251,7 +251,10 @@
     #+END_SRC
 
 *** Answer 7
-    
+    I know that this expression tends to negative infinity as $n$ tends to infinity
+    simply because the numerator has a power of $n$ greater than the denominator and
+    the greatest term in the denominator is negative.  But I couldn't find a way
+    to prove this formally.
 
 *** Answer 8
     I will show that the given sequence tentds to infinity.  Some notation first.
@@ -296,3 +299,98 @@
     #+END_SRC
     The last step is allowed becasue for all harmonic numbers greater than one
     it holds that $n > H_{n+1}$.
+
+** Problem 3
+   Let $(a_n)$ be a sequence such that $\lim_{n \to \infty}(a_{n+1} - a_n) = 0$.
+   1. Prove that if there exists a constant $c > 0$ s.t. for all $n$ 
+      $\abs{a_n}\geq c$, then almost all elements of the sequence are either
+      negative or positive.
+   2. Show that the same doesn't hold for $\abs{a_n} > 0$.
+   3. Show that if for all $n$ it holds that $\abs{a_n} \geq n$, then $(a_n)$
+      converges in a general sense.
+
+*** Answer 9
+    First, observe that the definition gives us a Cauchy sequence.  Recall that
+    Cauchy sequence is a sequence where intervals between subseqent members tend
+    to zero as $n$ tends to infinity.  That said, from the definition of the
+    limit, we can find $\epsilon < c$, such that almost all members of the
+    sequence would be in the vicinity of $c$ no farther away than
+    $\epsilon$. Thus, the sequence would converge to either a negative number or
+    a positive number, but not zero.  Since almost all members of a sequence can
+    be showed to be in a vicinity of a number other than zero, we have proved
+    the claim.
+
+*** Answer 10
+    The example $(a_n)$ such that doesn't match the requirement from the previous
+    question is, for example, $a_n = \frac{(-1)^n}{2n}$.  I.e. an alternating
+    series where even members are positive and odd members are negative.  The
+    general form of $a_{n+1} - a_n$ will thus look like this:
+    #+HEADER: :exports results
+    #+HEADER: :results (by-backend (pdf "latex") (t "raw"))
+    #+BEGIN_SRC latex
+      \begin{equation*}
+        \lim_{n \to \infty}\Big(\frac{(-1)^{n+1}-2(-1)^n}{2n}\Big) = 0.
+      \end{equation*}
+    #+END_SRC
+    
+    It's easy to see that this limit is zero: the nominator is a constant term
+    because one raised to any power is either one or negative one, while
+    denominator is growing with $n$.  It is also easy to see that this is
+    an alternating series, i.e. the sign alters with parity of $n$.
+
+*** Answer 11
+    Recall [[Answer 9]], where we used the fact that $(a_n)$ is described as a
+    Cauchy sequence.  This is enough to show that this sequence converges in
+    a general sense, whether the equation $\abs{a_n} \geq n$ holds or not
+    is inconsequential.  Perhaps it's worth saying that the above requirement
+    makes it explicit that the sequence converges to infinity if any of its
+    members is positive, and negative infinity otherwise.
+
+** Problem 4
+   Given sequences $(a_n)$ and $(b_n)$ s.t. $\lim_{n \to \infty}(a_nb_n) = 0$,
+   prove or disprove the following:
+
+   1. Either $\lim_{n \to \infty}a_n = 0$ or $\lim_{n \to \infty}b_n = 0$.
+   2. If $\lim_{n \to \infty}b_n = 1$, then there exists $N > 0$ s.t.
+      $a_n < \frac{1}{2}$ for all $n > N$.
+   3. If $\lim_{n \to \infty}b_n = 1$, then $\lim_{n \to \infty}a_n = 0$.
+   4. If almost all members of $(b_n)$ are positive, then 
+      $\lim_{n \to \infty}a_n \neq \infty$.
+   5. If almost all members of $(b_n)$ are positive, then 
+      $\lim_{n \to \infty}a_n = 0$.
+   6. If there exists a constant $c > 0$ s.t. almost all $b_n \geq c$, then
+      $\lim_{n \to \infty}a_n = 0$.
+
+*** Answer 12
+    The limit of a product is a product of limits (their existence is
+    provisional).  This gives us an equation in two unknowns: $ab = 0$.
+    From this equation follows that either $a$ or $b$ must be zero
+    Thus the claim is true.
+
+*** Answer 13
+    As shown in [[Answer 12]], either one (or both) limits must be zero,
+    thus if $\lim_{n \to \infty}a_n$ must be zero.  From definition of
+    the limit, there must be an $\epsilon$, such that for any $N$, almost
+    all $\abs{a_n - L} < \epsilon$, for $n > N$.  We can choose
+    $\epsilon = \frac{1}{2}$, since $L$ (the limit of $(a_n)$) is zero
+    the inequality becomes $\abs{a_n} < \frac{1}{2}$ since
+    $a_n \leq \abs{a_n} < \frac{1}{2}$ the claim is true.
+
+*** Answer 14
+    The claim is true. This is simply a corollary of [[Answer 12]].
+
+*** Answer 16
+    This is not true.  Put $b_n = \frac{1}{n}$, the limit of $(b_n)$ is 0.  Even
+    if $(a_n)$ is a divergent series, for example, $a_n = \sqrt{n}$ the limit of
+    a product is still zero.
+
+*** Answer 17
+    Same example as [[Answer 16]].  Limit of $(a_n)$ isn't zero and yet the
+    requirement is satisfied, thus the claim is false.
+
+*** Answer 18
+    Existence of lower bound greater than zero precludes $(b_n)$ from having
+    zero as its limit.  Assuming that there are members of a sequence which
+    are smaller than the lower bound is in direct contradiction with the
+    bound definition.  Thus the limit of $(a_n)$ must be zero (follows from
+    what we proved in [[Answer 12]]).  Thus the claim is true.
