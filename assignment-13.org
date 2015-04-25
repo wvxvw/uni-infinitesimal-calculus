@@ -1,0 +1,264 @@
+# -*- fill-column: 80; org-confirm-babel-evaluate: nil -*-
+
+#+TITLE:     Assignment 13, Infinitesimal Calculus
+#+AUTHOR:    Oleg Sivokon
+#+EMAIL:     olegsivokon@gmail.com
+#+DATE:      <2015-04-03 Fri>
+#+DESCRIPTION: Third asssignment in the course Infinitesimal Calculus
+#+KEYWORDS: Infinitesimal Calculus, Assignment, Definition of Limits
+#+LANGUAGE: en
+#+LaTeX_CLASS: article
+#+LATEX_HEADER: \usepackage[usenames,dvipsnames]{color}
+#+LATEX_HEADER: \usepackage[backend=bibtex, style=numeric]{biblatex}
+#+LATEX_HEADER: \usepackage{commath}
+#+LATEX_HEADER: \usepackage{tikz}
+#+LATEX_HEADER: \usetikzlibrary{shapes,backgrounds}
+#+LATEX_HEADER: \usepackage{marginnote}
+#+LATEX_HEADER: \usepackage{listings}
+#+LATEX_HEADER: \usepackage{color}
+#+LATEX_HEADER: \usepackage{enumerate}
+#+LATEX_HEADER: \hypersetup{urlcolor=blue}
+#+LATEX_HEADER: \hypersetup{colorlinks,urlcolor=blue}
+#+LATEX_HEADER: \addbibresource{bibliography.bib}
+#+LATEX_HEADER: \setlength{\parskip}{16pt plus 2pt minus 2pt}
+#+LATEX_HEADER: \definecolor{codebg}{rgb}{0.96,0.99,0.8}
+#+LATEX_HEADER: \definecolor{codestr}{rgb}{0.46,0.09,0.2}
+
+#+BEGIN_SRC emacs-lisp :exports none
+(setq org-latex-pdf-process
+        '("latexmk -pdflatex='pdflatex -shell-escape -interaction nonstopmode' -pdf -bibtex -f %f")
+        org-latex-listings t
+        org-src-fontify-natively t
+        org-babel-latex-htlatex "htlatex")
+(defmacro by-backend (&rest body)
+    `(cl-case (when (boundp 'backend) (org-export-backend-name backend))
+       ,@body))
+#+END_SRC
+
+#+RESULTS:
+: by-backend
+
+#+BEGIN_LATEX
+  \lstset{ %
+    backgroundcolor=\color{codebg},
+    basicstyle=\ttfamily\scriptsize,
+    breakatwhitespace=false,         % sets if automatic breaks should only happen at whitespace
+    breaklines=false,
+    captionpos=b,                    % sets the caption-position to bottom
+    commentstyle=\color{mygreen},    % comment style
+    framexleftmargin=10pt,
+    xleftmargin=10pt,
+    framerule=0pt,
+    frame=tb,                        % adds a frame around the code
+    keepspaces=true,                 % keeps spaces in text, useful for keeping indentation of code (possibly needs columns=flexible)
+    keywordstyle=\color{blue},       % keyword style
+    showspaces=false,                % show spaces everywhere adding particular underscores; it overrides 'showstringspaces'
+    showstringspaces=false,          % underline spaces within strings only
+    showtabs=false,                  % show tabs within strings adding particular underscores
+    stringstyle=\color{codestr},     % string literal style
+    tabsize=2,                       % sets default tabsize to 2 spaces
+  }
+#+END_LATEX
+
+\clearpage
+
+* Problems
+
+** Problem 1
+   Given the sequence $(a_n)$ defined as $0 < a_1 < 6$ and $a_{n+1} = \sqrt{6a_n}$
+   for all $n$.
+   1. Prove that the sequence converges.
+   2. Find $\lim_{n \to \infty} a_n$.
+
+*** Answer 1
+    First, observe that every next element of the sequence $(a_n)$ is bigger than
+    the previous.  Using mathematical induction we can show that:
+    
+    *Base step*: $\sqrt{a_1} < \sqrt{a_2}$ because $a_1 < 6$ and thus
+    $\sqrt{a_1} < \sqrt{6}$, consequently (from order preservation under multiplication)
+    $\sqrt{a_1} \times \sqrt{a_1} < \sqrt{6} \times \sqrt{a_1}$ and hence
+    $\sqrt{a_1} < \sqrt{a_2}$.
+
+    *Inductive step*:
+    #+HEADER: :exports results
+    #+HEADER: :results (by-backend (pdf "latex") (t "raw"))
+    #+BEGIN_SRC latex
+      \begin{equation*}
+        \begin{aligned}
+          a_k                        &< \sqrt{6 \times a_{k+1}} \\
+                                     &\textit{Using induction hypothesis, $k = n - 1$} \\
+          \sqrt{6 \times a_k}        &< \sqrt{6 \times a_{k+1}} \\
+          \sqrt{6} \times \sqrt{a_k} &< \sqrt{6} \times \sqrt{a_{k+1}} \\
+                                     &\textit{Order preservation under multiplication} \\
+          \sqrt{a_k}                 &< \sqrt{a_{k+1}} \\
+          a_k                 &< a_{k+1}
+        \end{aligned}
+      \end{equation*}
+    #+END_SRC
+    Hence, by mathematical induction, the sequence $(a_n)$ is an increasing one.
+
+    Now we demonstrate that this sequence is bounded above and it has a supremum.
+    Again, using induction, we can choose 6 to be the upper bound.
+
+    *Base step*: $a_1 < 6$ by definition.
+
+    *Inductive step*:
+    #+HEADER: :exports results
+    #+HEADER: :results (by-backend (pdf "latex") (t "raw"))
+    #+BEGIN_SRC latex
+      \begin{equation*}
+        \begin{aligned}
+          a_k                 &< 6 \\
+                              &\textit{Using induction hypothesis, $k = n - 1$} \\
+          \sqrt{6 \times a_k} &< \sqrt{6 \times 6} \\
+          \sqrt{6} \times \sqrt{a_k} &< \sqrt{6} \times \sqrt{6} \\
+                              &\textit{Order preservation under multiplication} \\
+          \sqrt{a_k}          &< \sqrt{6} \\
+          a_k &< 6
+        \end{aligned}
+      \end{equation*}
+    #+END_SRC
+    Hence, by mathematical induction, $(a_n)$ has an upper bound. It is trivial
+    to see that this is also the supremum, since $a_1$ is defined to be strictly
+    less than 6, so no smaller upper bound can exist.
+
+    Having showed both these properties, we can now use the monotone sequence
+    theorem to claim that this sequence converges.  Accidentally, we also found
+    the limit of this sequence, which wasn't due until the next question.
+
+*** Answer 2
+    We have already found the limit of $(a_n)$ as $n$ approaches infinity.  This
+    is given by a corollary from the monotone sequence theorem: the supremum
+    is also the limit of a monotone sequence.  Thus the answer is 6.
+
+** Problem 2
+   Find the limits of:
+
+   1. 
+      #+HEADER: :exports results
+      #+HEADER: :results (by-backend (pdf "latex") (t "raw"))
+      #+BEGIN_SRC latex
+        \begin{equation*}
+          \lim_{n \to \infty} \frac{(-5)^n - 2^n + 2}{3^n + (-2)^n - 2}.
+        \end{equation*}
+      #+END_SRC
+   2. 
+      #+HEADER: :results (by-backend (pdf "latex") (t "raw"))
+      #+BEGIN_SRC latex
+        \begin{equation*}
+          \lim_{n \to \infty} \frac{3^n + (-2)^n - 2}{(-5)^n - 2^n + 2}.
+        \end{equation*}
+      #+END_SRC
+   3. 
+      #+HEADER: :results (by-backend (pdf "latex") (t "raw"))
+      #+BEGIN_SRC latex
+        \begin{equation*}
+          \lim_{n \to \infty} (\lfloor 2n \rfloor - 2 \lfloor n \rfloor).
+        \end{equation*}
+      #+END_SRC
+   4. 
+      #+HEADER: :results (by-backend (pdf "latex") (t "raw"))
+      #+BEGIN_SRC latex
+        \begin{equation*}
+          \lim_{n \to \infty} \frac{\sqrt[n]{n!}}{n}.
+        \end{equation*}
+      #+END_SRC
+
+*** Answer 3
+    We can see that the denominator of this limit will be a positive
+    integer for $n > 1$.  The numerator will alternate between positive
+    and negative values, where the difference will only increase with
+    time since $(-5)^2n > 2^n$ and $(-5)^{2n-1} > 2^n$, thus this expression
+    has two limit points: $\infty$ and $-\infty$.
+
+*** Answer 4
+    The same reasoning we put forward in [[Answer 3]] applies here, but now the
+    numerator will be some positive integer, smaller than the denominator.
+    Thus this expression will have a single limit at 0.
+
+*** Answer 5
+    Here I will assume $n$ to be real, otherwise the limit is trivially 0.
+    In this case we can split the sequence into the following subsequences:
+    #+HEADER: :results (by-backend (pdf "latex") (t "raw"))
+    #+BEGIN_SRC latex
+      \begin{equation*}
+        \begin{aligned}
+          (a_n) = \{\lfloor x \rfloor | x \in \mathbb{R}: x \pmod 2 < 0.5 \} \\
+          (b_n) = \{\lfloor x \rfloor | x \in \mathbb{R}: x \pmod 2 \geq 0.5 \}
+        \end{aligned}
+      \end{equation*}
+    #+END_SRC
+    It's easy to see that $(a_n) \cup (b_n)$ gives the initial set.  These
+    subsets have constant limits $\{0, 1\}$ as is given by their generating
+    formulae: $\lfloor x \pmod 2 < 0.5 \rfloor$ and $\lfloor x \pmod 2 < 0.5
+    \rfloor$ resp.  But the whole expression doesn't have a single limit point,
+    since we can always find as many points as we like that would not be an
+    $\epsilon$ distance from one of the limit points found.
+
+*** Answer 6
+    We can show this expression approaches 1 as $n$ gets larger using the
+    following algebraic transformations:
+    #+HEADER: :results (by-backend (pdf "latex") (t "raw"))
+    #+BEGIN_SRC latex
+      \begin{equation*}
+        \begin{aligned}
+          \frac{\sqrt[n]{n!}}{n} &= \sqrt[n]{\frac{n!}{n^n}} \\
+                                 &= \sqrt[n]{\prod_{k=1}^n\frac{n - k}{n}}
+        \end{aligned}
+      \end{equation*}
+    #+END_SRC
+    Since $n - k < n$, $\frac{n - k}{n} < 1$.  The product of arbitrary many
+    terms all of which are less than one will be less than one.  And will
+    become smaller as the number of terms grows.  However, the nth root
+    will become progressively large as the fractional term becomes smaller,
+    yet never exceeding 1.  Thus the limit of this expression is 1.
+
+** Problem 3
+   Let $(a_n)$ and $(b_n)$ be sequences both bounded from above.
+   1. Prove $\sup \{a_n + b_n | n \in \mathbb{N}\} \leq \sup
+      \{a_n | n \in \mathbb{N}\} + \sup \{b_n | n \in \mathbb{N}\}$.
+   2. Find such $(a_n)$ and $(b_n)$ which are equal under the condition
+      given in (1).
+   3. Find such $(a_n)$ and $(b_n)$ for which the inequality given in
+      (1) holds.
+
+*** Answer 7
+
+*** Answer 8
+    An example of $(a_n) = \frac{1}{n}$ whose supremum is 1 and $(b_n) =
+    \frac{2}{n}$.  Since they both reach their maximum output at $n=1$, the sum
+    of their suprema and the supremum of their sum is the same.
+
+*** Answer 9
+    To contrast [[Answer 8]], $(a_n) = \frac{1}{n}$ and $(b_n) = \frac{1}{n - 1}$
+    reach their suprema at different times, ($(b_n)$ isn't even defined at the
+    time $(a_n)$ reaches its maximum), the supremum of their sum is thus 1.5,
+    but the sum of their suprema is 2.
+
+** Problem 4
+   Let $(a_n) = n - \lfloor \sqrt{n} \rfloor^2$.
+   1. Prove that $(a_n)$ is bounded from below.
+   2. Prove that 0 is a limit point of $(a_n)$.
+   3. Find $\inf \{a_n | n \in \mathbb{N}\}$, $\liminf_{n \to \infty} a_n$.
+      Establish whether $(a_n)$ has minima.
+   4. Given natural number $\ell$, prove that almost for all $n$ it holds
+      that $n < \sqrt{n^2 + \ell} < n + 1$.
+   5. Prove that every natural number is a limit point of $(a_n)$.
+   6. Is $(a_n)$ bounded from above?
+   7. Find $\limsup_{n \to \infty} a_n$.
+
+*** Answer 10
+
+*** Answer 11
+
+*** Answer 12
+
+** Problem 5
+   Let $(a_n)$ and $(b_n)$ be sequences.
+   1. Assume $\lim_{n \to \infty}(a_n + b_n) = L$ for some finite $L$.
+      Prove that if $(a_n)$ is bounded then $(b_n)$ is bounded too.
+   2. Assume $\lim_{n \to \infty}(a_n + b_n) = L$ for some finite $L$.
+      Prove that if $(a_n)$ has a limit point $a$, then $L - a$ is a
+      limit point of $(b_n)$.
+   3. Assume $(a_n)$ has 20106 limit points and $(b_n)$ has 20474 limit
+      points. Prove that $(a_n + b_n)$ diverges.

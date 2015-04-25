@@ -1,0 +1,266 @@
+% Created 2015-04-24 Fri 17:33
+\documentclass[11pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{fixltx2e}
+\usepackage{graphicx}
+\usepackage{longtable}
+\usepackage{float}
+\usepackage{wrapfig}
+\usepackage{rotating}
+\usepackage[normalem]{ulem}
+\usepackage{amsmath}
+\usepackage{textcomp}
+\usepackage{marvosym}
+\usepackage{wasysym}
+\usepackage{amssymb}
+\usepackage{hyperref}
+\tolerance=1000
+\usepackage[utf8]{inputenc}
+\usepackage[usenames,dvipsnames]{color}
+\usepackage[backend=bibtex, style=numeric]{biblatex}
+\usepackage{commath}
+\usepackage{tikz}
+\usetikzlibrary{shapes,backgrounds}
+\usepackage{marginnote}
+\usepackage{listings}
+\usepackage{color}
+\usepackage{enumerate}
+\hypersetup{urlcolor=blue}
+\hypersetup{colorlinks,urlcolor=blue}
+\addbibresource{bibliography.bib}
+\setlength{\parskip}{16pt plus 2pt minus 2pt}
+\definecolor{codebg}{rgb}{0.96,0.99,0.8}
+\definecolor{codestr}{rgb}{0.46,0.09,0.2}
+\author{Oleg Sivokon}
+\date{\textit{<2015-04-03 Fri>}}
+\title{Assignment 13, Infinitesimal Calculus}
+\hypersetup{
+  pdfkeywords={Infinitesimal Calculus, Assignment, Definition of Limits},
+  pdfsubject={Third asssignment in the course Infinitesimal Calculus},
+  pdfcreator={Emacs 25.0.50.1 (Org mode 8.2.2)}}
+\begin{document}
+
+\maketitle
+\tableofcontents
+
+
+\lstset{ %
+  backgroundcolor=\color{codebg},
+  basicstyle=\ttfamily\scriptsize,
+  breakatwhitespace=false,         % sets if automatic breaks should only happen at whitespace
+  breaklines=false,
+  captionpos=b,                    % sets the caption-position to bottom
+  commentstyle=\color{mygreen},    % comment style
+  framexleftmargin=10pt,
+  xleftmargin=10pt,
+  framerule=0pt,
+  frame=tb,                        % adds a frame around the code
+  keepspaces=true,                 % keeps spaces in text, useful for keeping indentation of code (possibly needs columns=flexible)
+  keywordstyle=\color{blue},       % keyword style
+  showspaces=false,                % show spaces everywhere adding particular underscores; it overrides 'showstringspaces'
+  showstringspaces=false,          % underline spaces within strings only
+  showtabs=false,                  % show tabs within strings adding particular underscores
+  stringstyle=\color{codestr},     % string literal style
+  tabsize=2,                       % sets default tabsize to 2 spaces
+}
+
+\clearpage
+
+\section{Problems}
+\label{sec-1}
+
+\subsection{Problem 1}
+\label{sec-1-1}
+Given the sequence $(a_n)$ defined as $0 < a_1 < 6$ and $a_{n+1} = \sqrt{6a_n}$
+for all $n$.
+\begin{enumerate}
+\item Prove that the sequence converges.
+\item Find $\lim_{n \to \infty} a_n$.
+\end{enumerate}
+
+\subsubsection{Answer 1}
+\label{sec-1-1-1}
+First, observe that every next element of the sequence $(a_n)$ is bigger than
+the previous.  Using mathematical induction we can show that:
+
+\textbf{Base step}: $\sqrt{a_1} < \sqrt{a_2}$ because $a_1 < 6$ and thus
+$\sqrt{a_1} < \sqrt{6}$, consequently (from order preservation under multiplication)
+$\sqrt{a_1} \times \sqrt{a_1} < \sqrt{6} \times \sqrt{a_1}$ and hence
+$\sqrt{a_1} < \sqrt{a_2}$.
+
+\textbf{Inductive step}:
+\begin{equation*}
+  \begin{aligned}
+    a_k                        &< \sqrt{6 \times a_{k+1}} \\
+                               &\textit{Using induction hypothesis, $k = n - 1$} \\
+    \sqrt{6 \times a_k}        &< \sqrt{6 \times a_{k+1}} \\
+    \sqrt{6} \times \sqrt{a_k} &< \sqrt{6} \times \sqrt{a_{k+1}} \\
+                               &\textit{Order preservation under multiplication} \\
+    \sqrt{a_k}                 &< \sqrt{a_{k+1}} \\
+    a_k                 &< a_{k+1}
+  \end{aligned}
+\end{equation*}
+
+Hence, by mathematical induction, the sequence $(a_n)$ is an increasing one.
+
+Now we demonstrate that this sequence is bounded above and it has a supremum.
+Again, using induction, we can choose 6 to be the upper bound.
+
+\textbf{Base step}: $a_1 < 6$ by definition.
+
+\textbf{Inductive step}:
+\begin{equation*}
+  \begin{aligned}
+    a_k                 &< 6 \\
+                        &\textit{Using induction hypothesis, $k = n - 1$} \\
+    \sqrt{6 \times a_k} &< \sqrt{6 \times 6} \\
+    \sqrt{6} \times \sqrt{a_k} &< \sqrt{6} \times \sqrt{6} \\
+                        &\textit{Order preservation under multiplication} \\
+    \sqrt{a_k}          &< \sqrt{6} \\
+    a_k &< 6
+  \end{aligned}
+\end{equation*}
+
+Hence, by mathematical induction, $(a_n)$ has an upper bound. It is trivial
+to see that this is also the supremum, since $a_1$ is defined to be strictly
+less than 6, so no smaller upper bound can exist.
+
+Having showed both these properties, we can now use the monotone sequence
+theorem to claim that this sequence converges.  Accidentally, we also found
+the limit of this sequence, which wasn't due until the next question.
+\subsubsection{Answer 2}
+\label{sec-1-1-2}
+We have already found the limit of $(a_n)$ as $n$ approaches infinity.  This
+is given by a corollary from the monotone sequence theorem: the supremum
+is also the limit of a monotone sequence.  Thus the answer is 6.
+\subsection{Problem 2}
+\label{sec-1-2}
+Find the limits of:
+
+\begin{enumerate}
+\item \begin{equation*}
+  \lim_{n \to \infty} \frac{(-5)^n - 2^n + 2}{3^n + (-2)^n - 2}.
+\end{equation*}
+
+\item \begin{equation*}
+  \lim_{n \to \infty} \frac{3^n + (-2)^n - 2}{(-5)^n - 2^n + 2}.
+\end{equation*}
+
+\item \begin{equation*}
+  \lim_{n \to \infty} (\lfloor 2n \rfloor - 2 \lfloor n \rfloor).
+\end{equation*}
+
+\item \begin{equation*}
+  \lim_{n \to \infty} \frac{\sqrt[n]{n!}}{n}.
+\end{equation*}
+\end{enumerate}
+
+\subsubsection{Answer 3}
+\label{sec-1-2-1}
+We can see that the denominator of this limit will be a positive
+integer for $n > 1$.  The numerator will alternate between positive
+and negative values, where the difference will only increase with
+time since $(-5)^2n > 2^n$ and $(-5)^{2n-1} > 2^n$, thus this expression
+has two limit points: $\infty$ and $-\infty$.
+\subsubsection{Answer 4}
+\label{sec-1-2-2}
+The same reasoning we put forward in \ref{sec-1-2-1} applies here, but now the
+numerator will be some positive integer, smaller than the denominator.
+Thus this expression will have a single limit at 0.
+\subsubsection{Answer 5}
+\label{sec-1-2-3}
+Here I will assume $n$ to be real, otherwise the limit is trivially 0.
+In this case we can split the sequence into the following subsequences:
+\begin{equation*}
+  \begin{aligned}
+    (a_n) = \{\lfloor x \rfloor | x \in \mathbb{R}: x \pmod 2 < 0.5 \} \\
+    (b_n) = \{\lfloor x \rfloor | x \in \mathbb{R}: x \pmod 2 \geq 0.5 \}
+  \end{aligned}
+\end{equation*}
+
+It's easy to see that $(a_n) \cup (b_n)$ gives the initial set.  These
+subsets have constant limits $\{0, 1\}$ as is given by their generating
+formulae: $\lfloor x \pmod 2 < 0.5 \rfloor$ and $\lfloor x \pmod 2 < 0.5
+    \rfloor$ resp.  But the whole expression doesn't have a single limit point,
+since we can always find as many points as we like that would not be an
+$\epsilon$ distance from one of the limit points found.
+\subsubsection{Answer 6}
+\label{sec-1-2-4}
+We can show this expression approaches 1 as $n$ gets larger using the
+following algebraic transformations:
+\begin{equation*}
+  \begin{aligned}
+    \frac{\sqrt[n]{n!}}{n} &= \sqrt[n]{\frac{n!}{n^n}} \\
+                           &= \sqrt[n]{\prod_{k=1}^n\frac{n - k}{n}}
+  \end{aligned}
+\end{equation*}
+
+Since $n - k < n$, $\frac{n - k}{n} < 1$.  The product of arbitrary many
+terms all of which are less than one will be less than one.  And will
+become smaller as the number of terms grows.  However, the nth root
+will become progressively large as the fractional term becomes smaller,
+yet never exceeding 1.  Thus the limit of this expression is 1.
+\subsection{Problem 3}
+\label{sec-1-3}
+Let $(a_n)$ and $(b_n)$ be sequences both bounded from above.
+\begin{enumerate}
+\item Prove $\sup \{a_n + b_n | n \in \mathbb{N}\} \leq \sup
+      \{a_n | n \in \mathbb{N}\} + \sup \{b_n | n \in \mathbb{N}\}$.
+\item Find such $(a_n)$ and $(b_n)$ which are equal under the condition
+given in (1).
+\item Find such $(a_n)$ and $(b_n)$ for which the inequality given in
+(1) holds.
+\end{enumerate}
+
+\subsubsection{Answer 7}
+\label{sec-1-3-1}
+
+\subsubsection{Answer 8}
+\label{sec-1-3-2}
+An example of $(a_n) = \frac{1}{n}$ whose supremum is 1 and $(b_n) =
+    \frac{2}{n}$.  Since they both reach their maximum output at $n=1$, the sum
+of their suprema and the supremum of their sum is the same.
+\subsubsection{Answer 9}
+\label{sec-1-3-3}
+To contrast \ref{sec-1-3-2}, $(a_n) = \frac{1}{n}$ and $(b_n) = \frac{1}{n - 1}$
+reach their suprema at different times, ($(b_n)$ isn't even defined at the
+time $(a_n)$ reaches its maximum), the supremum of their sum is thus 1.5,
+but the sum of their suprema is 2.
+\subsection{Problem 4}
+\label{sec-1-4}
+Let $(a_n) = n - \lfloor \sqrt{n} \rfloor^2$.
+\begin{enumerate}
+\item Prove that $(a_n)$ is bounded from below.
+\item Prove that 0 is a limit point of $(a_n)$.
+\item Find $\inf \{a_n | n \in \mathbb{N}\}$, $\liminf_{n \to \infty} a_n$.
+Establish whether $(a_n)$ has minima.
+\item Given natural number $\ell$, prove that almost for all $n$ it holds
+that $n < \sqrt{n^2 + \ell} < n + 1$.
+\item Prove that every natural number is a limit point of $(a_n)$.
+\item Is $(a_n)$ bounded from above?
+\item Find $\limsup_{n \to \infty} a_n$.
+\end{enumerate}
+
+\subsubsection{Answer 10}
+\label{sec-1-4-1}
+
+\subsubsection{Answer 11}
+\label{sec-1-4-2}
+
+\subsubsection{Answer 12}
+\label{sec-1-4-3}
+\subsection{Problem 5}
+\label{sec-1-5}
+Let $(a_n)$ and $(b_n)$ be sequences.
+\begin{enumerate}
+\item Assume $\lim_{n \to \infty}(a_n + b_n) = L$ for some finite $L$.
+Prove that if $(a_n)$ is bounded then $(b_n)$ is bounded too.
+\item Assume $\lim_{n \to \infty}(a_n + b_n) = L$ for some finite $L$.
+Prove that if $(a_n)$ has a limit point $a$, then $L - a$ is a
+limit point of $(b_n)$.
+\item Assume $(a_n)$ has 20106 limit points and $(b_n)$ has 20474 limit
+points. Prove that $(a_n + b_n)$ diverges.
+\end{enumerate}
+% Emacs 25.0.50.1 (Org mode 8.2.2)
+\end{document}
