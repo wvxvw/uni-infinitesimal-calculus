@@ -9,7 +9,6 @@
 #+LANGUAGE: en
 #+LaTeX_CLASS: article
 #+LATEX_HEADER: \usepackage[usenames,dvipsnames]{color}
-#+LATEX_HEADER: \usepackage[backend=bibtex, style=numeric]{biblatex}
 #+LATEX_HEADER: \usepackage{commath}
 #+LATEX_HEADER: \usepackage{tikz}
 #+LATEX_HEADER: \usetikzlibrary{shapes,backgrounds}
@@ -19,14 +18,13 @@
 #+LATEX_HEADER: \usepackage{enumerate}
 #+LATEX_HEADER: \hypersetup{urlcolor=blue}
 #+LATEX_HEADER: \hypersetup{colorlinks,urlcolor=blue}
-#+LATEX_HEADER: \addbibresource{bibliography.bib}
 #+LATEX_HEADER: \setlength{\parskip}{16pt plus 2pt minus 2pt}
 #+LATEX_HEADER: \definecolor{codebg}{rgb}{0.96,0.99,0.8}
 #+LATEX_HEADER: \definecolor{codestr}{rgb}{0.46,0.09,0.2}
 
 #+BEGIN_SRC emacs-lisp :exports none
 (setq org-latex-pdf-process
-        '("latexmk -pdflatex='pdflatex -shell-escape -interaction nonstopmode' -pdf -bibtex -f %f")
+        '("latexmk -pdflatex='pdflatex -shell-escape -interaction nonstopmode' -pdf -f %f")
         org-latex-listings t
         org-src-fontify-natively t
         org-babel-latex-htlatex "htlatex")
@@ -223,6 +221,18 @@
       (1) holds.
 
 *** Answer 7
+    Suppose, for contradiction, that there is some such sequences $(a_n)$ and
+    $(b_n)$, for which $\sup \{a_n + b_n | n \in \mathbb{N}\} > \sup \{a_n | n
+    \in \mathbb{N}\} + \sup \{b_n | n \in \mathbb{N}\}$.  But we know that every
+    element of $(a_n)$ is at least as large as $\sup (a_n)$, and the same is
+    true of $(b_n)$.  Let's call the supremum of the sum of the sequences $s_1$,
+    the supremum of $(a_n)$---$s_2$ and the supremum of $(b_n)$--- $s_3$.
+    Since $s_1 > s_2 + s_3$, either $(a_n)$ or $(b_n)$ must contain an element
+    which is as large as $s_2 + s_1 - s_2$ (and similarly for $(b_n)$.)  But
+    this is a contradiction, since $s_2$ is the largest element of $(a_n)$
+    (and similarly for $(b_n)$.)  Hence, the initial assumption is false, hence
+    the supremum of the element-wise sum of two sequences cannot be greater than
+    the sum of the suprema of these sequences.
 
 *** Answer 8
     An example of $(a_n) = \frac{1}{n}$ whose supremum is 1 and $(b_n) =
@@ -248,10 +258,76 @@
    7. Find $\limsup_{n \to \infty} a_n$.
 
 *** Answer 10
+    I will claim that the lower bound on this sequence is 0.  The term
+    $\lfloor \sqrt{n} \rfloor^2$  can be either equal to $n$ (when $n$ is
+    a perfect sqare), or it can be smaller than $n$.  Assume, for contradiction,
+    that $\lfloor \sqrt{n} \rfloor^2 > n$, then it gives
+    $\lfloor \sqrt{n} \rfloor > \sqrt{n}$, but since $n$ is positive, this is
+    impossible.  Hence contradiction.  Hence, the original claim stands.
 
 *** Answer 11
+    We can choose the subsequence of $(a_n)$ such that it consists only
+    of the perfect squares.  In which case the $\lim_{m \to \infty}(a_m) = 0$
+    because $m = n * n$, and subsequently $m = \lfloor \sqrt{m} \rfloor^2$.
 
 *** Answer 12
+    Following the argument similar to [[Answer 10]], the greatest lower bound on
+    $(a_n)$ is 0.  Assume there was some positive $x$, a candidate for a greater
+    lower bound, then $n - \lfloor \sqrt{n} \rfloor^2 > x$.  Let's try $n = 1$
+    to show the contradiction.  Substituting $n = 1$ gives $0 > x$, but we
+    assumed $x > 0$.  Hence, contradiction, hence the sequence has greates
+    lower bound at zero.
+
+*** Answer 13
+    Through some algebraic transformations we arrive at:
+    #+HEADER: :exports results
+    #+HEADER: :results (by-backend (pdf "latex") (t "raw"))
+    #+BEGIN_SRC latex
+      \begin{flalign*}
+        &n < \sqrt{n^2 + \ell} < n + 1 \\
+        &n^2 < n^2 + \ell < n^2 + 2n + 1 \\
+        &\textit{First inequality is obviously true for $\ell > 0$} \\
+        &n^2 + \ell < n^2 + 2n + 1 \\
+        &\ell < 2n + 1 \\
+        &\textit{Second inequality is true for $\ell < 2n + 1$}.
+      \end{flalign*}
+    #+END_SRC
+    Thus the left side of inequality holds for $\ell > 0$ and the right
+    side holds for $\ell < 2n + 1$.  Since $\ell$ is a constant, and $n$
+    can be made as large as desired, the inequality holds for almost all $n$.
+
+*** Answer 14
+    Pick a natural number $x$, without loss of generality we assume:
+    $\lim_{m \to \infty}(a_m) = x$, where $m$ is somehow choosen from the
+    set of all values of $n$.  We can define a selection rule to be
+    ``whenever $n + x$ is a perfect square'', since there are infinitely
+    many perfect squares, and there isn't a largest perfect square, $x$
+    can be any number.
+
+*** Anser 15
+    No, $(a_n)$ doesn't have a supermum.  Assume it had one, let's say $N$, then
+    for all $n - \lfloor \sqrt{n} \rfloor^2 < N$.  But we could think of $m =
+    N^2 - 1$, which if we substitute back into our original formula:
+    #+HEADER: :exports results
+    #+HEADER: :results (by-backend (pdf "latex") (t "raw"))
+    #+BEGIN_SRC latex
+      \begin{flalign*}
+        &m - \lfloor \sqrt{m} \rfloor^2 < N \\
+        &N^2 - 1 - \lfloor \sqrt{N^2 - 1} \rfloor^2 < N \\
+        &N^2 - 1 - \sqrt{(N - 1)^2}^2 < N \\
+        &\textit{$N^2 - 1$ cannot be a perfect square} \\
+        &N^2 - 1 - (N - 1)^2 < N \\
+        &N^2 - 1 - N^2 + 2N - 1 < N \\
+        &2N - 2 < N.
+      \end{flalign*}
+    #+END_SRC
+    Which is a contradiction (because $N$ must be greater than 2).  Hence no
+    supremum exists.
+
+*** Answer 16
+    Since we just showed that $(a_n)$ diverges, the $\limsup_{n \to \infty}(a_n)$
+    doesn't exist in the narrow sense of the word, or is equal to $\infty$ in a
+    more general sense.
 
 ** Problem 5
    Let $(a_n)$ and $(b_n)$ be sequences.
@@ -262,3 +338,25 @@
       limit point of $(b_n)$.
    3. Assume $(a_n)$ has 20106 limit points and $(b_n)$ has 20474 limit
       points. Prove that $(a_n + b_n)$ diverges.
+
+*** Answer 17
+    Assume, for contradiction, $(b_n)$ is unbounded, then $\lim_{n \to
+    \infty}(b_n)$ is either $\infty$ or $-\infty$, but from the addition
+    rules involving infinity we know that $\infty + L = \infty$ and
+    $L - \infty = -\infty$, but we are given that the sequence converges,
+    hence contradiction.  Hence $(b_n)$ must be bounded.
+
+*** Answer 18
+    Since the sequence of sum converges, each one of its subsequences converges
+    to the same limit.  Hence both $(a_n)$ and $(b_n)$ have defined limits.  We
+    can use the limit sum law to show that $\lim_{n \to \infty}(a_n + b_n) =
+    \lim_{n \to \infty}(a_n) + \lim_{n \to \infty}(b_n) = L$.  Since we are
+    given $\lim_{n \to \infty}(a_n) = a$, it follows that $\lim_{n \to
+    \infty}(b_n) = L - a$, which completes the proof.
+
+*** Answer 19
+    By pigeonhole principle, there must be a limit point exclusive to $(b_n)$.
+    Existence of this limit point would violate what we proved in [[Answer 17]].
+    Since the statement in previous answer is a biconditional, then, in
+    particular, it follows that sequence $(a_n + b_n)$ diverges (has no finite
+    limit).
