@@ -1,4 +1,4 @@
-% Created 2015-05-09 Sat 20:31
+% Created 2015-05-09 Sat 23:59
 \documentclass[11pt]{article}
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
@@ -44,10 +44,16 @@
 \tableofcontents
 
 
+\lstset{language=Lisp,label=fname,numbers=none}
+\begin{lstlisting}
+(format "\"%s/%s\"" (file-name-directory (buffer-file-name)) f)
+\end{lstlisting}
+
 \definecolor{codebg}{rgb}{0.96,0.99,0.8}
 \lstnewenvironment{maxima}{%
   \lstset{backgroundcolor=\color{codebg},
     aboveskip=20pt,
+    showstringspaces=false,
     frame=single,
     framerule=0pt,
     basicstyle=\ttfamily\scriptsize,
@@ -79,15 +85,21 @@ Hence $\Dom(f) = \{x \in \mathbb{R} \; | \; \frac{\pi}{4} < x \bmod \frac{\pi}{2
 
 \begin{maxima}
 programmode: false;
-gnuplot_pdf_command: %command;
-print(plot2d (tan(x),
-  [x, -2 * %pi, 2 * %pi], [y, -3, 3], grid2d,
-  [xtics, 0.25 * %pi, %pi, 1.5 * %pi],
-  [ytics, 1, 1, 1], [label, ["(0, 0)", -1.4, 0.4]],
-  [title, "Tangent curve"], [pdf_file, %out]));
+print (plot2d (tan(x),
+    [x, -2 * %pi, 2 * %pi], [y, -3, 3],
+    [gnuplot_pdf_term_command, 
+     "set term cairolatex standalone pdf size 16cm,10.5cm"],
+    [gnuplot_postamble,
+     "set arrow from pi/4,-3 to pi/4,3 nohead
+      set arrow from pi*5/4,-3 to pi*5/4,3 nohead
+      set arrow from -2*pi,1 to 2*pi,1 nohead"],
+    [ytics, 1, 1, 1], [xtics, 0, 1, 0],
+    [label, ["${\\displaystyle \\frac{\\pi}{4}}$", 1.4, 2.4],
+            ["${\\displaystyle \\frac{5\\pi}{4}}$", 3.2, 2.4]],
+    [title, "Tangent curve"], [pdf_file, %out]));
 \end{maxima}
 
-\includegraphics[width=0.7\textwidth]{/home/wvxvw/Documents/uni/infinitesimal-calculus/tangent_x.pdf}
+\includegraphics[width=0.9\textwidth]{/home/wvxvw/Documents/uni/infinitesimal-calculus/tangent_x.pdf}
 \subsubsection{Answer 2}
 \label{sec-1-1-2}
 Both functions attain the same values at 0 and $\frac{\pi}{4}$.  But sine is
@@ -100,13 +112,22 @@ tangent is greater than sine.  The functions meet again at $x=\pi$.
 programmode: false;
 gnuplot_pdf_command: %command;
 print(plot2d ([abs(tan(x)), sin(2 * x)],
-  [x, -2 * %pi, 2 * %pi], [y, -1.5, 3], grid2d,
-  [xtics, 0.25 * %pi, 0.75 * %pi, 1.5 * %pi],
-  [ytics, 1, 1, 1], [label, ["(0, 0)", -1.4, 0.4]],
-  [title, "Tangent curve"], [pdf_file, %out]));
+    [x, -2 * %pi, 2 * %pi], [y, -1.5, 3],
+    [gnuplot_pdf_term_command, 
+     "set term cairolatex standalone pdf size 16cm,10.5cm"],
+    [gnuplot_postamble,
+     "set arrow from pi/4,-1.5 to pi/4,3 nohead
+      set arrow from pi,-1.5 to pi,3 nohead
+      set arrow from -2*pi,1 to 2*pi,1 nohead
+      set key spacing 1.8 left bottom"],
+    [xtics, 0, 1, 0], [ytics, 1, 1, 1],
+    [label, ["${\\displaystyle \\frac{\\pi}{4}}$", 1.4, 2.1],
+            ["${\\displaystyle \\pi}$", 3.4, 2.1]],
+    [title, "Tangent curve intersecting with sine curve"],
+    [pdf_file, %out]));
 \end{maxima}
 
-\includegraphics[width=0.7\textwidth]{/home/wvxvw/Documents/uni/infinitesimal-calculus/abstangent_x.pdf}
+\includegraphics[width=0.9\textwidth]{/home/wvxvw/Documents/uni/infinitesimal-calculus/abstangent_x.pdf}
 \subsection{Problem 2}
 \label{sec-1-2}
 Let $f$, $g$ and $h$ be functions from $\mathbb{R}$ to $\mathbb{R}$.
