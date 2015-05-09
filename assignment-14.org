@@ -1,0 +1,172 @@
+# -*- fill-column: 80; org-confirm-babel-evaluate: nil -*-
+
+#+TITLE:     Assignment 14, Infinitesimal Calculus
+#+AUTHOR:    Oleg Sivokon
+#+EMAIL:     olegsivokon@gmail.com
+#+DATE:      <2015-04-03 Fri>
+#+DESCRIPTION: Fourth asssignment in the course Infinitesimal Calculus
+#+KEYWORDS: Infinitesimal Calculus, Assignment, Limits of functions
+#+LANGUAGE: en
+#+LaTeX_CLASS: article
+#+LATEX_HEADER: \usepackage[usenames,dvipsnames]{color}
+#+LATEX_HEADER: \usepackage{commath}
+#+LATEX_HEADER: \usepackage{tikz}
+#+LATEX_HEADER: \usetikzlibrary{shapes,backgrounds}
+#+LATEX_HEADER: \usepackage{marginnote}
+#+LATEX_HEADER: \usepackage{listings}
+#+LATEX_HEADER: \usepackage{color}
+#+LATEX_HEADER: \usepackage{enumerate}
+#+LATEX_HEADER: \hypersetup{urlcolor=blue}
+#+LATEX_HEADER: \hypersetup{colorlinks,urlcolor=blue}
+#+LATEX_HEADER: \setlength{\parskip}{16pt plus 2pt minus 2pt}
+#+LATEX_HEADER: \definecolor{codebg}{rgb}{0.96,0.99,0.8}
+#+LATEX_HEADER: \definecolor{codestr}{rgb}{0.46,0.09,0.2}
+#+LATEX_HEADER: \DeclareMathOperator{\Dom}{Dom}
+
+#+BEGIN_SRC emacs-lisp :exports none
+  (setq org-latex-pdf-process
+          '("latexmk -pdflatex='pdflatex -shell-escape -interaction nonstopmode' -pdf -f %f")
+          org-latex-listings t
+          org-src-fontify-natively t
+          org-latex-custom-lang-environments '((maxima "maxima"))
+          org-babel-latex-htlatex "htlatex")
+  (defmacro by-backend (&rest body)
+      `(cl-case (when (boundp 'backend) (org-export-backend-name backend))
+         ,@body))
+#+END_SRC
+
+#+RESULTS:
+: by-backend
+
+#+BEGIN_LATEX
+  \definecolor{codebg}{rgb}{0.96,0.99,0.8}
+  \lstnewenvironment{maxima}{%
+    \lstset{backgroundcolor=\color{codebg},
+      aboveskip=20pt,
+      frame=single,
+      framerule=0pt,
+      basicstyle=\ttfamily\scriptsize,
+      columns=fixed}}{}
+  }
+  \makeatletter
+  \newcommand{\verbatimfont}[1]{\renewcommand{\verbatim@font}{\ttfamily#1}}
+  \makeatother
+  \verbatimfont{\small}%
+  \clearpage
+#+END_LATEX
+
+* Problems
+
+** Problem 1
+   1. Find the domain of $f$ defined as $f(x) = \sqrt{\tan x - 1}$.
+   2. Find all values of $x$ in segment $[0, \pi]$, for which $\abs{\tan x} \leq \sin 2x}$.
+
+*** Answer 1
+    $\tan x > 1$ where $\frac{\pi}{4} < x \bmod \frac{\pi}{2} < \frac{\pi}{2}$.
+    Since we assume that $f$ is real-valued, we cannot extract roots from negative numbers.
+    
+    Hence $\Dom(f) = \{x \in \mathbb{R} \; | \; \frac{\pi}{4} < x \bmod \frac{\pi}{2}
+    < \frac{\pi}{2}\}$.
+
+    #+NAME: prob1
+    #+HEADER: :exports source
+    #+HEADER: :var %out="\"/home/wvxvw/Documents/uni/infinitesimal-calculus/tangent_x.pdf\""
+    #+HEADER: :var %command="\"set term pdfcairo color solid lw 3 size 10.2 cm, 6.2 cm font \\\",18\\\"\"";
+    #+BEGIN_SRC maxima :results output raw
+      programmode: false;
+      gnuplot_pdf_command: %command;
+      print(plot2d (tan(x),
+        [x, -2 * %pi, 2 * %pi], [y, -3, 3], grid2d,
+        [xtics, 0.25 * %pi, %pi, 1.5 * %pi],
+        [ytics, 1, 1, 1], [label, ["(0, 0)", -1.4, 0.4]],
+        [title, "Tangent curve"], [pdf_file, %out]));
+    #+END_SRC
+
+    #+begin_src emacs-lisp :var maxima-output=prob1() :results file :exports results
+      (replace-regexp-in-string
+       "[] ]+$" ""
+       (replace-regexp-in-string
+        "^\\s-+" ""
+        (car (reverse (split-string maxima-output "\n")))))
+    #+end_src
+
+    #+ATTR_LATEX: :width 0.7\textwidth
+    #+RESULTS:
+    [[file:/home/wvxvw/Documents/uni/infinitesimal-calculus/tangent_x.pdf]]
+
+*** Answer 2
+    Both functions attain the same values at 0 and $\frac{\pi}{4}$.  But sine is
+    a concave function and tanget is a convex function, thus tangent must be less
+    than sine at this interval.  Tangent keeps increasing until $\frac{\pi}{2}$,
+    while sine will be decreasing until $\frac{3\pi}{2}$, thus, on this interval
+    tangent is greater than sine.  The functions meet again at $x=\pi$.
+    
+    #+NAME: prob2
+    #+HEADER: :exports source
+    #+HEADER: :var %out="\"/home/wvxvw/Documents/uni/infinitesimal-calculus/abstangent_x.pdf\""
+    #+HEADER: :var %command="\"set term pdfcairo color solid lw 3 size 10.2 cm, 6.2 cm font \\\",18\\\"\"";
+    #+BEGIN_SRC maxima :results output raw
+      programmode: false;
+      gnuplot_pdf_command: %command;
+      print(plot2d ([abs(tan(x)), sin(2 * x)],
+        [x, -2 * %pi, 2 * %pi], [y, -1.5, 3], grid2d,
+        [xtics, 0.25 * %pi, 0.75 * %pi, 1.5 * %pi],
+        [ytics, 1, 1, 1], [label, ["(0, 0)", -1.4, 0.4]],
+        [title, "Tangent curve"], [pdf_file, %out]));
+    #+END_SRC
+    
+    #+begin_src emacs-lisp :var maxima-output=prob2() :results file :exports results
+      (replace-regexp-in-string
+       "[] ]+$" ""
+       (replace-regexp-in-string
+        "^\\s-+" ""
+        (car (reverse (split-string maxima-output "\n")))))
+    #+end_src
+
+    #+ATTR_LATEX: :width 0.7\textwidth
+    #+RESULTS:
+    [[file:/home/wvxvw/Documents/uni/infinitesimal-calculus/abstangent_x.pdf]]
+
+** Problem 2
+   Let $f$, $g$ and $h$ be functions from $\mathbb{R}$ to $\mathbb{R}$.
+   1. If $f \circ g = f \circ h$, does it follow $g = h$?
+   2. If $f \circ g = f \circ h$, and $f$ is one-to-one, does it follow $g = h$?
+   3. If $f \circ g = f \circ h$, and $f$ is onto, does it follow $g = h$?
+   4. If $f \circ g$ is increasing, and $f$ is decreasing, does it follow that
+      $g$ is increasing?
+   5. If $f \circ g$ is increasing, and $f$ is one-to-one, does it follow that
+      $g$ is monotonic?
+
+*** Answer 3
+    No, $g$ and $h$ are not necessarily equal.  Whenever co-domain of $f$
+    doesn't contain some real number, $g$ and $h$ may differ in that input.
+    For example, let $f(x) = 2x$, $g(x) = (x \bmod 2) + x$ and
+    $h(x) = (x \bmod 2) * 2 + x$.  Because $f$ in this example will only
+    generate even numbers, the $(x \bmod 2)$ term will always be zero,
+    thus $f \circ g = f \circ h$, but, obviously, $g \neq h$.
+
+*** Answer 4
+    No, it isn't sufficient for $f$ to be one-to-one to ensure right-cancellation
+    property under composition.  The example given in [[Answer 3]] is applicable
+    in this case too since whenever $f(x) = f(y)$ so is $x = y$ (since multiplication
+    does have the cancellation property).
+
+*** Answer 5
+    Yes, if $f$ is onto, then the composition is right-cancellable.  Suppose,
+    for contradiction it wasn't, then for some $y$ $g(y) \neq h(y)$, but
+    $y = f(x)$ (since by definition of a total function, every element in
+    its co-domain has an element in its domain).  Hence $g(f(x)) \neq h(f(x))$,
+    but we are given that $g \circ f = h \circ f$, which is a contradiction.
+    Hence functions are equal.
+
+*** Answer 6
+    No, $g$ doesn't need to be increasing.  Put $g(x) = f(x) = -x$, both $f$
+    and $g$ are decreasing but $f \circ g = Id$, which is an increasing function.
+
+*** Anser 7
+    No, $g$ is not necessarily monotonic.  Put $f(x) = x(-1)^x$ and $g(x) = \abs{x}$.
+    Then $(f \circ g)(x) = \abs{x(-1)^x} = x\abs{(-1)^x} = x$.  $f \circ g$ is
+    increasing, $f$ is one-to-one, but $g$ isn't monotonic: it decreases whenever
+    $x$ is negative and increases whenever $x$ is positive.
+    
+    
