@@ -41,7 +41,7 @@
 
 #+NAME: fname
 #+HEADER: :var f="dummy"
-#+BEGIN_SRC emacs-lisp :export none
+#+BEGIN_SRC emacs-lisp :exports none
   (format "\"%s/%s\"" (file-name-directory (buffer-file-name)) f)
 #+END_SRC
 
@@ -200,4 +200,128 @@
     increasing, $f$ is one-to-one, but $g$ isn't monotonic: it decreases whenever
     $x$ is negative and increases whenever $x$ is positive.
     
+** Problem 3
+   1. Prove from $\epsilon-\delta$ definition of limit that 
+      $\lim_{x \to 2}\sqrt{3x - 2} = 2$.
+   2. Prove from $\epsilon-M$ definition of limit that 
+      $\lim_{x \to \infty}\frac{x}{x+\sin x} = 1$.
+
+*** Answer 8
+    Recall the definition:
+    #+BEGIN_QUOTE
+    For all $\epsilon > 0$ there exists $\sigma > 0$ s.t. for all $x$ in
+    $\Dom(f(x))$ which satisfy $0 < \abs{x - x_0} < \sigma$ the inequality
+    $\abs{f(x) - L} < \epsilon$ holds.
+    #+END_QUOTE
+
+    Let $\epsilon$ be arbitrary real, put
+    #+HEADER: :exports results
+    #+HEADER: :results (by-backend (pdf "latex") (t "raw"))
+    #+BEGIN_SRC latex
+      \begin{equation*}
+        \begin{aligned}
+            &\abs{f(x) - L}          &< \epsilon                         &\iff \\
+            &\abs{\sqrt{3x - 2} - 2} &< \epsilon                               \\
+            &\textit{Suppose $\sqrt{3x - 2} - 2 > 0$}                          \\
+          0 &< \sqrt{3x - 2} - 2     &< \epsilon                         &\iff \\
+          0 &< \sqrt{3x - 2}         &< \epsilon + 2                     &\iff \\
+          0 &< 3x - 2                &< (\epsilon + 2)^2                 &\iff \\
+          0 &< 3x - 2                &< \epsilon^2 + 4\epsilon + 4       &\iff \\
+          0 &< 3x - 6                &< \epsilon^2 + 4\epsilon           &\iff \\
+          0 &< x - 2                 &< \frac{\epsilon^2 + 4\epsilon}{3}       \\
+            &\textit{Similarly for $\sqrt{3x - 2} - 2 < 0$}                    \\
+          0 &> \sqrt{3x - 2} - 2     &> -\epsilon                        &\iff \\
+          0 &> \sqrt{3x - 2}         &> -\epsilon + 2                    &\iff \\
+          0 &> 3x - 2                &> (-\epsilon + 2)^2                &\iff \\
+          0 &> 3x - 2                &> \epsilon^2 - 4\epsilon + 4       &\iff \\
+          0 &> 3x - 6                &> \epsilon^2 - 4\epsilon           &\iff \\
+          0 &> x - 2                 &> \frac{\epsilon^2 - 4\epsilon}{3} &\iff \\
+        \end{aligned}
+      \end{equation*}
+    #+END_SRC
+    Hence, we can choose $\delta$ to be $\frac{\epsilon^2 - 4\epsilon}{3}$
+    whenever $x < x_0$ and $\frac{\epsilon^2 + 4\epsilon}{3}$ whenever
+    $x > x_0$, which completes the proof.
+
+*** Answer 9
+    Recall the definition:
+    #+BEGIN_QUOTE
+    For all $\epsilon > 0$ there exists $M > 0$ s.t. for all $x$ in
+    $\Dom(f(x))$ $x > M$ implies $\abs{f(x) - L} < \epsilon$.
+    #+END_QUOTE
+
+    Let $\epsilon > 0$, then look for appropriate value for $x$:
+    #+HEADER: :exports results
+    #+HEADER: :results (by-backend (pdf "latex") (t "raw"))
+    #+BEGIN_SRC latex
+      \begin{equation*}
+        \begin{aligned}
+          &\abs{\frac{x}{x + \sin x} - 1}                   &< \epsilon &\iff \\
+          &\abs{\frac{x}{x + \sin x} - \sin^2 x - \cos^2 x} &< \epsilon &\iff \\
+          &\abs{\frac{x - \sin^2 x(x + \sin x) -
+              \cos^2 x(x + \sin x)}{x + \sin x}}            &< \epsilon &\iff \\
+          &\abs{\frac{x - x\sin^2 x - \sin^3 x -
+              x\cos^2 x - \cos^2 x \sin x}{x + \sin x}}     &< \epsilon &\iff \\
+          &\abs{\frac{x(1 - \sin^2 - \cos^2 x) -
+              \sin x(\sin^2 x - \cos^2)}{x + \sin x}}       &< \epsilon &\iff \\
+          &\abs{\frac{x(1 - 1) - \sin x(1)}{x + \sin x}}    &< \epsilon &\iff \\
+          &\abs{\frac{-\sin x}{x + \sin x}}                 &< \epsilon \\
+        \end{aligned}
+      \end{equation*}
+    #+END_SRC
+
+    Assume $x > 0$:
+    #+HEADER: :exports results
+    #+HEADER: :results (by-backend (pdf "latex") (t "raw"))
+    #+BEGIN_SRC latex
+      \begin{equation*}
+        \begin{aligned}
+          &\frac{-\sin x}{x + \sin x} &< \epsilon &\iff \\
+          &-\sin x                    &< \epsilon(x + \sin x) &\iff \\
+          &-\sin x                    &< \epsilon x + \epsilon \sin x &\iff \\
+          &-\epsilon x                &< \sin x + \epsilon \sin x &\iff \\
+          &-x                         &< \frac{\sin x + \epsilon \sin x}{\epsilon} &\iff \\
+          &x                          &> \frac{\sin x(1 + \epsilon)}{\epsilon}
+        \end{aligned}
+      \end{equation*}
+    #+END_SRC
+
+    Put $M = \max\left(0, \frac{\sin x(1 + \epsilon)}{\epsilon}\right)$. If $x > M$, then
+    $x > 0$ and $x > \frac{\sin x(1 + \epsilon)}{\epsilon}$, hence:
+    #+HEADER: :exports results
+    #+HEADER: :results (by-backend (pdf "latex") (t "raw"))
+    #+BEGIN_SRC latex
+      \begin{equation*}
+        \begin{aligned}
+          &x                              &> \frac{\sin x(1 + \epsilon)}{\epsilon} \\
+          &\hdots \textit{Reverse the calculations above} \\
+          &\frac{-\sin x}{x + \sin x}     &< \epsilon \\
+          &\hdots \\
+          &\abs{\frac{x}{x + \sin x} - 1} &< \epsilon.
+        \end{aligned}
+      \end{equation*}
+    #+END_SRC
+    Which completes the proof.
+
+** Problem 4
+   1. Let $f$ be a function defined in the neighborhood of $x_0$.
+      Express ``$f$ doesn't have a limit at $x_0$'' using:
+      + $\epsilon-\sigma$ language.
+      + Using Heine definition of limit (for sequences).
+        
+   2. Prove that $f(x) = \frac{x}{x - \lfloor x \rfloor}$ doesn't have
+      a finite limit at $x \to 0$ in the following ways:
+      + By using $\epsilon-\sigma$ definition given above.
+      + By using Heine definition of limit (also given above).
+
+*** Answer 10
     
+*** Answer 11
+
+** Problem 5
+   Find limits of:
+   1. $\lim_{x \to 0}\frac{1 - \cos x}{x \sin x}$.
+   2. $\lim_{x \to 0}\frac{x + 7x^3}{x^3 - 2x^4}$.
+   3. $\lim_{x \to 0}\frac{x^2 - 1}{2x^3 - x^2 - x}$.
+   4. $\lim_{x \to 0}(\sqrt{1 + x + x^2} - \sqrt{1 - x + x^2})$.
+   5. $\lim_{x \to k}\lfloor x \rfloor \tan \frac{\pi x}{2}$.

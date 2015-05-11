@@ -1,4 +1,4 @@
-% Created 2015-05-09 Sat 23:59
+% Created 2015-05-11 Mon 21:58
 \documentclass[11pt]{article}
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
@@ -43,11 +43,6 @@
 \maketitle
 \tableofcontents
 
-
-\lstset{language=Lisp,label=fname,numbers=none}
-\begin{lstlisting}
-(format "\"%s/%s\"" (file-name-directory (buffer-file-name)) f)
-\end{lstlisting}
 
 \definecolor{codebg}{rgb}{0.96,0.99,0.8}
 \lstnewenvironment{maxima}{%
@@ -173,5 +168,130 @@ No, $g$ is not necessarily monotonic.  Put $f(x) = x(-1)^x$ and $g(x) = \abs{x}$
 Then $(f \circ g)(x) = \abs{x(-1)^x} = x\abs{(-1)^x} = x$.  $f \circ g$ is
 increasing, $f$ is one-to-one, but $g$ isn't monotonic: it decreases whenever
 $x$ is negative and increases whenever $x$ is positive.
+\subsection{Problem 3}
+\label{sec-1-3}
+\begin{enumerate}
+\item Prove from $\epsilon-\delta$ definition of limit that 
+      $\lim_{x \to 2}\sqrt{3x - 2} = 2$.
+\item Prove from $\epsilon-M$ definition of limit that 
+      $\lim_{x \to \infty}\frac{x}{x+\sin x} = 1$.
+\end{enumerate}
+
+\subsubsection{Answer 8}
+\label{sec-1-3-1}
+Recall the definition:
+\begin{quote}
+For all $\epsilon > 0$ there exists $\sigma > 0$ s.t. for all $x$ in
+$\Dom(f(x))$ which satisfy $0 < \abs{x - x_0} < \sigma$ the inequality
+$\abs{f(x) - L} < \epsilon$ holds.
+\end{quote}
+
+Let $\epsilon$ be arbitrary real, put
+\begin{equation*}
+  \begin{aligned}
+      &\abs{f(x) - L}          &< \epsilon                         &\iff \\
+      &\abs{\sqrt{3x - 2} - 2} &< \epsilon                               \\
+      &\textit{Suppose $\sqrt{3x - 2} - 2 > 0$}                          \\
+    0 &< \sqrt{3x - 2} - 2     &< \epsilon                         &\iff \\
+    0 &< \sqrt{3x - 2}         &< \epsilon + 2                     &\iff \\
+    0 &< 3x - 2                &< (\epsilon + 2)^2                 &\iff \\
+    0 &< 3x - 2                &< \epsilon^2 + 4\epsilon + 4       &\iff \\
+    0 &< 3x - 6                &< \epsilon^2 + 4\epsilon           &\iff \\
+    0 &< x - 2                 &< \frac{\epsilon^2 + 4\epsilon}{3}       \\
+      &\textit{Similarly for $\sqrt{3x - 2} - 2 < 0$}                    \\
+    0 &> \sqrt{3x - 2} - 2     &> -\epsilon                        &\iff \\
+    0 &> \sqrt{3x - 2}         &> -\epsilon + 2                    &\iff \\
+    0 &> 3x - 2                &> (-\epsilon + 2)^2                &\iff \\
+    0 &> 3x - 2                &> \epsilon^2 - 4\epsilon + 4       &\iff \\
+    0 &> 3x - 6                &> \epsilon^2 - 4\epsilon           &\iff \\
+    0 &> x - 2                 &> \frac{\epsilon^2 - 4\epsilon}{3} &\iff \\
+  \end{aligned}
+\end{equation*}
+
+Hence, we can choose $\delta$ to be $\frac{\epsilon^2 - 4\epsilon}{3}$
+whenever $x < x_0$ and $\frac{\epsilon^2 + 4\epsilon}{3}$ whenever
+$x > x_0$, which completes the proof.
+\subsubsection{Answer 9}
+\label{sec-1-3-2}
+Recall the definition:
+\begin{quote}
+For all $\epsilon > 0$ there exists $M > 0$ s.t. for all $x$ in
+$\Dom(f(x))$ $x > M$ implies $\abs{f(x) - L} < \epsilon$.
+\end{quote}
+
+Let $\epsilon > 0$, then look for appropriate value for $x$:
+\begin{equation*}
+  \begin{aligned}
+    &\abs{\frac{x}{x + \sin x} - 1}                   &< \epsilon &\iff \\
+    &\abs{\frac{x}{x + \sin x} - \sin^2 x - \cos^2 x} &< \epsilon &\iff \\
+    &\abs{\frac{x - \sin^2 x(x + \sin x) -
+        \cos^2 x(x + \sin x)}{x + \sin x}}            &< \epsilon &\iff \\
+    &\abs{\frac{x - x\sin^2 x - \sin^3 x -
+        x\cos^2 x - \cos^2 x \sin x}{x + \sin x}}     &< \epsilon &\iff \\
+    &\abs{\frac{x(1 - \sin^2 - \cos^2 x) -
+        \sin x(\sin^2 x - \cos^2)}{x + \sin x}}       &< \epsilon &\iff \\
+    &\abs{\frac{x(1 - 1) - \sin x(1)}{x + \sin x}}    &< \epsilon &\iff \\
+    &\abs{\frac{-\sin x}{x + \sin x}}                 &< \epsilon \\
+  \end{aligned}
+\end{equation*}
+
+Assume $x > 0$:
+\begin{equation*}
+  \begin{aligned}
+    &\frac{-\sin x}{x + \sin x} &< \epsilon &\iff \\
+    &-\sin x                    &< \epsilon(x + \sin x) &\iff \\
+    &-\sin x                    &< \epsilon x + \epsilon \sin x &\iff \\
+    &-\epsilon x                &< \sin x + \epsilon \sin x &\iff \\
+    &-x                         &< \frac{\sin x + \epsilon \sin x}{\epsilon} &\iff \\
+    &x                          &> \frac{\sin x(1 + \epsilon)}{\epsilon}
+  \end{aligned}
+\end{equation*}
+
+Put $M = \max\left(0, \frac{\sin x(1 + \epsilon)}{\epsilon}\right)$. If $x > M$, then
+$x > 0$ and $x > \frac{\sin x(1 + \epsilon)}{\epsilon}$, hence:
+\begin{equation*}
+  \begin{aligned}
+    &x                              &> \frac{\sin x(1 + \epsilon)}{\epsilon} \\
+    &\hdots \textit{Reverse the calculations above} \\
+    &\frac{-\sin x}{x + \sin x}     &< \epsilon \\
+    &\hdots \\
+    &\abs{\frac{x}{x + \sin x} - 1} &< \epsilon.
+  \end{aligned}
+\end{equation*}
+
+Which completes the proof.
+\subsection{Problem 4}
+\label{sec-1-4}
+\begin{enumerate}
+\item Let $f$ be a function defined in the neighborhood of $x_0$.
+Express ``$f$ doesn't have a limit at $x_0$'' using:
+\begin{itemize}
+\item $\epsilon-\sigma$ language.
+\item Using Heine definition of limit (for sequences).
+\end{itemize}
+
+\item Prove that $f(x) = \frac{x}{x - \lfloor x \rfloor}$ doesn't have
+a finite limit at $x \to 0$ in the following ways:
+\begin{itemize}
+\item By using $\epsilon-\sigma$ definition given above.
+\item By using Heine definition of limit (also given above).
+\end{itemize}
+\end{enumerate}
+
+\subsubsection{Answer 10}
+\label{sec-1-4-1}
+
+\subsubsection{Answer 11}
+\label{sec-1-4-2}
+\subsection{Problem 5}
+\label{sec-1-5}
+Find limits of:
+\begin{enumerate}
+\item $\lim_{x \to 0}\frac{1 - \cos x}{x \sin x}$.
+\item $\lim_{x \to 0}\frac{x + 7x^3}{x^3 - 2x^4}$.
+\item $\lim_{x \to 0}\frac{x^2 - 1}{2x^3 - x^2 - x}$.
+\item $\lim_{x \to 0}(\sqrt{1 + x + x^2} - \sqrt{1 - x + x^2})$.
+\item $\lim_{x \to k}\lfloor x \rfloor \tan \frac{\pi x}{2}$.
+\end{enumerate}
 % Emacs 25.0.50.1 (Org mode 8.2.2)
 \end{document}
