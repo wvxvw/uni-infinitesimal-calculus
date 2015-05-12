@@ -1,5 +1,5 @@
-% Created 2015-05-11 Mon 21:58
-\documentclass[11pt]{article}
+% Created 2015-05-12 Tue 22:37
+\documentclass[a4paper]{article}
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
 \usepackage{fixltx2e}
@@ -31,6 +31,7 @@
 \definecolor{codebg}{rgb}{0.96,0.99,0.8}
 \definecolor{codestr}{rgb}{0.46,0.09,0.2}
 \DeclareMathOperator{\Dom}{Dom}
+\allowdisplaybreaks[4]
 \author{Oleg Sivokon}
 \date{\textit{<2015-04-03 Fri>}}
 \title{Assignment 14, Infinitesimal Calculus}
@@ -204,7 +205,7 @@ Let $\epsilon$ be arbitrary real, put
     0 &> 3x - 2                &> (-\epsilon + 2)^2                &\iff \\
     0 &> 3x - 2                &> \epsilon^2 - 4\epsilon + 4       &\iff \\
     0 &> 3x - 6                &> \epsilon^2 - 4\epsilon           &\iff \\
-    0 &> x - 2                 &> \frac{\epsilon^2 - 4\epsilon}{3} &\iff \\
+    0 &> x - 2                 &> \frac{\epsilon^2 - 4\epsilon}{3}
   \end{aligned}
 \end{equation*}
 
@@ -220,44 +221,38 @@ $\Dom(f(x))$ $x > M$ implies $\abs{f(x) - L} < \epsilon$.
 \end{quote}
 
 Let $\epsilon > 0$, then look for appropriate value for $x$:
-\begin{equation*}
-  \begin{aligned}
-    &\abs{\frac{x}{x + \sin x} - 1}                   &< \epsilon &\iff \\
-    &\abs{\frac{x}{x + \sin x} - \sin^2 x - \cos^2 x} &< \epsilon &\iff \\
-    &\abs{\frac{x - \sin^2 x(x + \sin x) -
-        \cos^2 x(x + \sin x)}{x + \sin x}}            &< \epsilon &\iff \\
-    &\abs{\frac{x - x\sin^2 x - \sin^3 x -
-        x\cos^2 x - \cos^2 x \sin x}{x + \sin x}}     &< \epsilon &\iff \\
-    &\abs{\frac{x(1 - \sin^2 - \cos^2 x) -
-        \sin x(\sin^2 x - \cos^2)}{x + \sin x}}       &< \epsilon &\iff \\
-    &\abs{\frac{x(1 - 1) - \sin x(1)}{x + \sin x}}    &< \epsilon &\iff \\
-    &\abs{\frac{-\sin x}{x + \sin x}}                 &< \epsilon \\
-  \end{aligned}
-\end{equation*}
+\begin{align*}
+  &\abs{\frac{x}{x + \sin x} - 1}                   &< \epsilon &\iff \\
+  &\abs{\frac{x}{x + \sin x} - \sin^2 x - \cos^2 x} &< \epsilon &\iff \\
+  &\abs{\frac{x - \sin^2 x(x + \sin x) -
+      \cos^2 x(x + \sin x)}{x + \sin x}}            &< \epsilon &\iff \\
+  &\abs{\frac{x - x\sin^2 x - \sin^3 x -
+      x\cos^2 x - \cos^2 x \sin x}{x + \sin x}}     &< \epsilon &\iff \\
+  &\abs{\frac{x(1 - \sin^2 - \cos^2 x) -
+      \sin x(\sin^2 x - \cos^2)}{x + \sin x}}       &< \epsilon &\iff \\
+  &\abs{\frac{x(1 - 1) - \sin x(1)}{x + \sin x}}    &< \epsilon &\iff \\
+  &\abs{\frac{-\sin x}{x + \sin x}}                 &< \epsilon \\
+\end{align*}
 
 Assume $x > 0$:
-\begin{equation*}
-  \begin{aligned}
-    &\frac{-\sin x}{x + \sin x} &< \epsilon &\iff \\
-    &-\sin x                    &< \epsilon(x + \sin x) &\iff \\
-    &-\sin x                    &< \epsilon x + \epsilon \sin x &\iff \\
-    &-\epsilon x                &< \sin x + \epsilon \sin x &\iff \\
-    &-x                         &< \frac{\sin x + \epsilon \sin x}{\epsilon} &\iff \\
-    &x                          &> \frac{\sin x(1 + \epsilon)}{\epsilon}
-  \end{aligned}
-\end{equation*}
+\begin{align*}
+  &\frac{-\sin x}{x + \sin x} &< \epsilon &\iff \\
+  &-\sin x                    &< \epsilon(x + \sin x) &\iff \\
+  &-\sin x                    &< \epsilon x + \epsilon \sin x &\iff \\
+  &-\epsilon x                &< \sin x + \epsilon \sin x &\iff \\
+  &-x                         &< \frac{\sin x + \epsilon \sin x}{\epsilon} &\iff \\
+  &x                          &> \frac{\sin x(1 + \epsilon)}{\epsilon}
+\end{align*}
 
 Put $M = \max\left(0, \frac{\sin x(1 + \epsilon)}{\epsilon}\right)$. If $x > M$, then
 $x > 0$ and $x > \frac{\sin x(1 + \epsilon)}{\epsilon}$, hence:
-\begin{equation*}
-  \begin{aligned}
-    &x                              &> \frac{\sin x(1 + \epsilon)}{\epsilon} \\
-    &\hdots \textit{Reverse the calculations above} \\
-    &\frac{-\sin x}{x + \sin x}     &< \epsilon \\
-    &\hdots \\
-    &\abs{\frac{x}{x + \sin x} - 1} &< \epsilon.
-  \end{aligned}
-\end{equation*}
+\begin{align*}
+  &x                              &> \frac{\sin x(1 + \epsilon)}{\epsilon} \\
+  &\hdots \textit{Reverse the calculations above} \\
+  &\frac{-\sin x}{x + \sin x}     &< \epsilon \\
+  &\hdots \\
+  &\abs{\frac{x}{x + \sin x} - 1} &< \epsilon.
+\end{align*}
 
 Which completes the proof.
 \subsection{Problem 4}
@@ -291,7 +286,93 @@ Find limits of:
 \item $\lim_{x \to 0}\frac{x + 7x^3}{x^3 - 2x^4}$.
 \item $\lim_{x \to 0}\frac{x^2 - 1}{2x^3 - x^2 - x}$.
 \item $\lim_{x \to 0}(\sqrt{1 + x + x^2} - \sqrt{1 - x + x^2})$.
-\item $\lim_{x \to k}\lfloor x \rfloor \tan \frac{\pi x}{2}$.
+\item $\lim_{x \to k}\lfloor x \rfloor \tan \frac{\pi x}{2}$, $k = 0, 1, 2$.
 \end{enumerate}
+
+\subsubsection{Answer 12}
+\label{sec-1-5-1}
+\begin{maxima}
+tex(limit((1 - cos(x)) / (x * sin(x)), x, 0));
+\end{maxima}
+
+$${{1}\over{2}}$$
+
+\textbf{Proof:}
+\begin{align*}
+  \lim_{x \to 0}\frac{1 - \cos x}{x \sin x} &= 
+  \lim_{x \to 0}\frac{(1 - \cos x) * (1 + \cos x)}{x \sin x (1 + \cos x)} \\
+  &= \lim_{x \to 0}\frac{1 - \cos^2 x}{x \sin x (1 + \cos x)} \\
+  &= \lim_{x \to 0}\frac{\sin^2 x}{x \sin x (1 + \cos x)} \\
+  &= \lim_{x \to 0}\frac{\sin x}{x (1 + \cos x)} \\
+  &= \lim_{x \to 0}\frac{\sin x}{x} * \lim_{x \to 0}\frac{1}{1 + \cos x} \\
+  &= 1 * \lim_{x \to 0}\frac{1}{1 + \cos x} \\
+  &= \lim_{x \to 0}\frac{1}{1 + 1} \\
+  &= \frac{1}{2}
+\end{align*}
+\subsubsection{Answer 13}
+\label{sec-1-5-2}
+\begin{maxima}
+tex(limit((x + 7 * x^3) / (x^3 - 2 * x^4), x, 0));
+\end{maxima}
+
+$$\infty $$
+
+\textbf{Proof:}
+\begin{align*}
+  \lim_{x \to 0}\frac{x + 7x^3}{x^3 - 2x^4} &= 
+  \lim_{x \to 0}\frac{1 + 7x^2}{x^2 - 2x^3} \\
+  &= \lim_{x \to 0}\frac{1 - 4x^2}{x^2 - 2x^3} + \frac{11x^2}{x^2 - 2x^3} \\
+  &= \lim_{x \to 0}\frac{(1 - 2x)(1 + 2x)}{x^2(1 - 2x)} + \frac{11}{1 + 2x} \\
+  &= \lim_{x \to 0}\frac{1 + 2x}{x^2} + \frac{11}{1 + 2x} \\
+  &= \lim_{x \to 0}\frac{1}{x^2} + \frac{2x}{x^2} + \frac{11}{1 + 2x} \\
+  &= \lim_{x \to 0}\frac{1}{x^2} + \frac{2}{x} + \frac{11}{1 + 2x} \\
+  &= \lim_{x \to 0}\frac{1}{x^2} + \lim_{x \to 0}\frac{2}{x} + \lim_{x \to 0}\frac{11}{1 + 2x} \\
+  &= \infty + \infty + 11 & \textit{Using ifinite limits addition} \\
+  &= \infty
+\end{align*}
+\subsubsection{Answer 14}
+\label{sec-1-5-3}
+\begin{maxima}
+tex(limit((x^2 - 1) / (2 * x^3 - x^2 - x), x, 0));
+\end{maxima}
+
+$${\it infinity}$$
+
+\textbf{Proof:}
+\begin{align*}
+  \lim_{x \to 0}\frac{x^2 - 1}{2x^3 - x^2 - x} &=
+  \lim_{x \to 0}\frac{(x - 1)(x + 1)}{x^2(x - 1) + x(x^2 - 1)} \\
+  &= \lim_{x \to 0}\frac{(x - 1)(x + 1)}{x^2(x - 1) + x(x - 1)(x + 1)} \\
+  &= \lim_{x \to 0}\frac{(x - 1)(x + 1)}{(x - 1)(x^2 + x(x + 1))} \\
+  &= \lim_{x \to 0}\frac{x + 1}{x^2 + x(x + 1)} \\
+  &= \lim_{x \to 0}\frac{x + 1}{x^2 + x^2 + x} \\
+  &= \lim_{x \to 0}\frac{x + 1}{2x^2 + x} \\
+  &= \lim_{x \to 0}\frac{x + 1}{x(2x + 1)} \\
+  &= \lim_{x \to 0}\frac{x + 1}{x} * \lim_{x \to 0}\frac{1}{2x + 1} \\
+  &= \lim_{x \to 0}\frac{x + 1}{x} * 1 \\
+  &= \infty
+\end{align*}
+\subsubsection{Answer 15}
+\label{sec-1-5-4}
+\begin{maxima}
+tex(limit(sqrt(1 + x + x^2) - sqrt(1 - x + x^2), x, 0));
+\end{maxima}
+
+$$0$$
+
+\textbf{Proof:} this function is continuous at $x = 0$ since square root
+is continuous at 1 and this function is offset by one.  From definition
+of continuity we know that the limit of the function coincides with its
+value, hence the limit is $\sqrt{1 + 0 + 0^2} - \sqrt{1 - 0 + 0^2} = 1 - 1 = 0$.
+\subsubsection{Answer 16}
+\label{sec-1-5-5}
+\begin{maxima}
+for i : 0 thru 2 do
+    tex(limit(floor(x) * tan((%pi * x) / 2), x, i));
+\end{maxima}
+
+$$0$$
+$${\it und}$$
+$$0$$
 % Emacs 25.0.50.1 (Org mode 8.2.2)
 \end{document}

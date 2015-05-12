@@ -8,6 +8,7 @@
 #+KEYWORDS: Infinitesimal Calculus, Assignment, Limits of functions
 #+LANGUAGE: en
 #+LaTeX_CLASS: article
+#+LATEX_CLASS_OPTIONS: [a4paper]
 #+LATEX_HEADER: \usepackage[usenames,dvipsnames]{color}
 #+LATEX_HEADER: \usepackage{commath}
 #+LATEX_HEADER: \usepackage{tikz}
@@ -22,6 +23,7 @@
 #+LATEX_HEADER: \definecolor{codebg}{rgb}{0.96,0.99,0.8}
 #+LATEX_HEADER: \definecolor{codestr}{rgb}{0.46,0.09,0.2}
 #+LATEX_HEADER: \DeclareMathOperator{\Dom}{Dom}
+#+LATEX_HEADER: \allowdisplaybreaks[4]
 
 #+BEGIN_SRC emacs-lisp :exports none
   (setq org-latex-pdf-process
@@ -235,7 +237,7 @@
           0 &> 3x - 2                &> (-\epsilon + 2)^2                &\iff \\
           0 &> 3x - 2                &> \epsilon^2 - 4\epsilon + 4       &\iff \\
           0 &> 3x - 6                &> \epsilon^2 - 4\epsilon           &\iff \\
-          0 &> x - 2                 &> \frac{\epsilon^2 - 4\epsilon}{3} &\iff \\
+          0 &> x - 2                 &> \frac{\epsilon^2 - 4\epsilon}{3}
         \end{aligned}
       \end{equation*}
     #+END_SRC
@@ -254,36 +256,33 @@
     #+HEADER: :exports results
     #+HEADER: :results (by-backend (pdf "latex") (t "raw"))
     #+BEGIN_SRC latex
-      \begin{equation*}
-        \begin{aligned}
-          &\abs{\frac{x}{x + \sin x} - 1}                   &< \epsilon &\iff \\
-          &\abs{\frac{x}{x + \sin x} - \sin^2 x - \cos^2 x} &< \epsilon &\iff \\
-          &\abs{\frac{x - \sin^2 x(x + \sin x) -
-              \cos^2 x(x + \sin x)}{x + \sin x}}            &< \epsilon &\iff \\
-          &\abs{\frac{x - x\sin^2 x - \sin^3 x -
-              x\cos^2 x - \cos^2 x \sin x}{x + \sin x}}     &< \epsilon &\iff \\
-          &\abs{\frac{x(1 - \sin^2 - \cos^2 x) -
-              \sin x(\sin^2 x - \cos^2)}{x + \sin x}}       &< \epsilon &\iff \\
-          &\abs{\frac{x(1 - 1) - \sin x(1)}{x + \sin x}}    &< \epsilon &\iff \\
-          &\abs{\frac{-\sin x}{x + \sin x}}                 &< \epsilon \\
-        \end{aligned}
-      \end{equation*}
+      \begin{align*}
+        &\abs{\frac{x}{x + \sin x} - 1}                   &< \epsilon &\iff \\
+        &\abs{\frac{x}{x + \sin x} - \sin^2 x - \cos^2 x} &< \epsilon &\iff \\
+        &\abs{\frac{x - \sin^2 x(x + \sin x) -
+            \cos^2 x(x + \sin x)}{x + \sin x}}            &< \epsilon &\iff \\
+        &\abs{\frac{x - x\sin^2 x - \sin^3 x -
+            x\cos^2 x - \cos^2 x \sin x}{x + \sin x}}     &< \epsilon &\iff \\
+        &\abs{\frac{x(1 - \sin^2 - \cos^2 x) -
+            \sin x(\sin^2 x - \cos^2)}{x + \sin x}}       &< \epsilon &\iff \\
+        &\abs{\frac{x(1 - 1) - \sin x(1)}{x + \sin x}}    &< \epsilon &\iff \\
+        &\abs{\frac{-\sin x}{x + \sin x}}                 &< \epsilon \\
+      \end{align*}
+      
     #+END_SRC
 
     Assume $x > 0$:
     #+HEADER: :exports results
     #+HEADER: :results (by-backend (pdf "latex") (t "raw"))
     #+BEGIN_SRC latex
-      \begin{equation*}
-        \begin{aligned}
-          &\frac{-\sin x}{x + \sin x} &< \epsilon &\iff \\
-          &-\sin x                    &< \epsilon(x + \sin x) &\iff \\
-          &-\sin x                    &< \epsilon x + \epsilon \sin x &\iff \\
-          &-\epsilon x                &< \sin x + \epsilon \sin x &\iff \\
-          &-x                         &< \frac{\sin x + \epsilon \sin x}{\epsilon} &\iff \\
-          &x                          &> \frac{\sin x(1 + \epsilon)}{\epsilon}
-        \end{aligned}
-      \end{equation*}
+      \begin{align*}
+        &\frac{-\sin x}{x + \sin x} &< \epsilon &\iff \\
+        &-\sin x                    &< \epsilon(x + \sin x) &\iff \\
+        &-\sin x                    &< \epsilon x + \epsilon \sin x &\iff \\
+        &-\epsilon x                &< \sin x + \epsilon \sin x &\iff \\
+        &-x                         &< \frac{\sin x + \epsilon \sin x}{\epsilon} &\iff \\
+        &x                          &> \frac{\sin x(1 + \epsilon)}{\epsilon}
+      \end{align*}
     #+END_SRC
 
     Put $M = \max\left(0, \frac{\sin x(1 + \epsilon)}{\epsilon}\right)$. If $x > M$, then
@@ -291,15 +290,13 @@
     #+HEADER: :exports results
     #+HEADER: :results (by-backend (pdf "latex") (t "raw"))
     #+BEGIN_SRC latex
-      \begin{equation*}
-        \begin{aligned}
-          &x                              &> \frac{\sin x(1 + \epsilon)}{\epsilon} \\
-          &\hdots \textit{Reverse the calculations above} \\
-          &\frac{-\sin x}{x + \sin x}     &< \epsilon \\
-          &\hdots \\
-          &\abs{\frac{x}{x + \sin x} - 1} &< \epsilon.
-        \end{aligned}
-      \end{equation*}
+      \begin{align*}
+        &x                              &> \frac{\sin x(1 + \epsilon)}{\epsilon} \\
+        &\hdots \textit{Reverse the calculations above} \\
+        &\frac{-\sin x}{x + \sin x}     &< \epsilon \\
+        &\hdots \\
+        &\abs{\frac{x}{x + \sin x} - 1} &< \epsilon.
+      \end{align*}
     #+END_SRC
     Which completes the proof.
 
@@ -324,4 +321,96 @@
    2. $\lim_{x \to 0}\frac{x + 7x^3}{x^3 - 2x^4}$.
    3. $\lim_{x \to 0}\frac{x^2 - 1}{2x^3 - x^2 - x}$.
    4. $\lim_{x \to 0}(\sqrt{1 + x + x^2} - \sqrt{1 - x + x^2})$.
-   5. $\lim_{x \to k}\lfloor x \rfloor \tan \frac{\pi x}{2}$.
+   5. $\lim_{x \to k}\lfloor x \rfloor \tan \frac{\pi x}{2}$, $k = 0, 1, 2$.
+
+*** Answer 12
+    #+NAME: prob3
+    #+HEADER: :exports both
+    #+BEGIN_SRC maxima :results output raw
+      tex(limit((1 - cos(x)) / (x * sin(x)), x, 0));
+    #+END_SRC
+    *Proof:*
+    #+HEADER: :exports results
+    #+HEADER: :results (by-backend (pdf "latex") (t "raw"))
+    #+BEGIN_SRC latex
+      \begin{align*}
+        \lim_{x \to 0}\frac{1 - \cos x}{x \sin x} &= 
+        \lim_{x \to 0}\frac{(1 - \cos x) * (1 + \cos x)}{x \sin x (1 + \cos x)} \\
+        &= \lim_{x \to 0}\frac{1 - \cos^2 x}{x \sin x (1 + \cos x)} \\
+        &= \lim_{x \to 0}\frac{\sin^2 x}{x \sin x (1 + \cos x)} \\
+        &= \lim_{x \to 0}\frac{\sin x}{x (1 + \cos x)} \\
+        &= \lim_{x \to 0}\frac{\sin x}{x} * \lim_{x \to 0}\frac{1}{1 + \cos x} \\
+        &= 1 * \lim_{x \to 0}\frac{1}{1 + \cos x} \\
+        &= \lim_{x \to 0}\frac{1}{1 + 1} \\
+        &= \frac{1}{2}
+      \end{align*}
+    #+END_SRC
+
+*** Answer 13
+    #+NAME: prob4
+    #+HEADER: :exports both
+    #+BEGIN_SRC maxima :results output raw
+      tex(limit((x + 7 * x^3) / (x^3 - 2 * x^4), x, 0));
+    #+END_SRC
+    *Proof:*
+    #+HEADER: :exports results
+    #+HEADER: :results (by-backend (pdf "latex") (t "raw"))
+    #+BEGIN_SRC latex
+      \begin{align*}
+        \lim_{x \to 0}\frac{x + 7x^3}{x^3 - 2x^4} &= 
+        \lim_{x \to 0}\frac{1 + 7x^2}{x^2 - 2x^3} \\
+        &= \lim_{x \to 0}\frac{1 - 4x^2}{x^2 - 2x^3} + \frac{11x^2}{x^2 - 2x^3} \\
+        &= \lim_{x \to 0}\frac{(1 - 2x)(1 + 2x)}{x^2(1 - 2x)} + \frac{11}{1 + 2x} \\
+        &= \lim_{x \to 0}\frac{1 + 2x}{x^2} + \frac{11}{1 + 2x} \\
+        &= \lim_{x \to 0}\frac{1}{x^2} + \frac{2x}{x^2} + \frac{11}{1 + 2x} \\
+        &= \lim_{x \to 0}\frac{1}{x^2} + \frac{2}{x} + \frac{11}{1 + 2x} \\
+        &= \lim_{x \to 0}\frac{1}{x^2} + \lim_{x \to 0}\frac{2}{x} + \lim_{x \to 0}\frac{11}{1 + 2x} \\
+        &= \infty + \infty + 11 & \textit{Using ifinite limits addition} \\
+        &= \infty
+      \end{align*}
+    #+END_SRC
+
+*** Answer 14
+    #+NAME: prob5
+    #+HEADER: :exports both
+    #+BEGIN_SRC maxima :results output raw
+      tex(limit((x^2 - 1) / (2 * x^3 - x^2 - x), x, 0));
+    #+END_SRC
+    *Proof:*
+    #+HEADER: :exports results
+    #+HEADER: :results (by-backend (pdf "latex") (t "raw"))
+    #+BEGIN_SRC latex
+      \begin{align*}
+        \lim_{x \to 0}\frac{x^2 - 1}{2x^3 - x^2 - x} &=
+        \lim_{x \to 0}\frac{(x - 1)(x + 1)}{x^2(x - 1) + x(x^2 - 1)} \\
+        &= \lim_{x \to 0}\frac{(x - 1)(x + 1)}{x^2(x - 1) + x(x - 1)(x + 1)} \\
+        &= \lim_{x \to 0}\frac{(x - 1)(x + 1)}{(x - 1)(x^2 + x(x + 1))} \\
+        &= \lim_{x \to 0}\frac{x + 1}{x^2 + x(x + 1)} \\
+        &= \lim_{x \to 0}\frac{x + 1}{x^2 + x^2 + x} \\
+        &= \lim_{x \to 0}\frac{x + 1}{2x^2 + x} \\
+        &= \lim_{x \to 0}\frac{x + 1}{x(2x + 1)} \\
+        &= \lim_{x \to 0}\frac{x + 1}{x} * \lim_{x \to 0}\frac{1}{2x + 1} \\
+        &= \lim_{x \to 0}\frac{x + 1}{x} * 1 \\
+        &= \infty
+      \end{align*}
+    #+END_SRC
+
+*** Answer 15
+    #+NAME: prob6
+    #+HEADER: :exports both
+    #+BEGIN_SRC maxima :results output raw
+      tex(limit(sqrt(1 + x + x^2) - sqrt(1 - x + x^2), x, 0));
+    #+END_SRC
+    *Proof:* this function is continuous at $x = 0$ since square root
+    is continuous at 1 and this function is offset by one.  From definition
+    of continuity we know that the limit of the function coincides with its
+    value, hence the limit is $\sqrt{1 + 0 + 0^2} - \sqrt{1 - 0 + 0^2} = 1 - 1 = 0$.
+
+*** Answer 16
+    #+NAME: prob7
+    #+HEADER: :exports both
+    #+BEGIN_SRC maxima :results output raw
+      for i : 0 thru 2 do
+          tex(limit(floor(x) * tan((%pi * x) / 2), x, i));
+    #+END_SRC
+
