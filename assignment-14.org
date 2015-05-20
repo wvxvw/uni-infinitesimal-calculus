@@ -30,39 +30,60 @@
           '("latexmk -pdflatex='pdflatex -shell-escape -interaction nonstopmode' -pdf -f %f")
           org-latex-listings t
           org-src-fontify-natively t
+          org-listings-escape-inside '("(*@" . "@*)")
           org-latex-custom-lang-environments '((maxima "maxima"))
           org-babel-latex-htlatex "htlatex")
-  
+
   (defmacro by-backend (&rest body)
       `(cl-case (when (boundp 'backend) (org-export-backend-name backend))
          ,@body))
+
+  (defmacro with-current-dir (directory &rest body)
+    `(let ((old default-directory))
+       (cd ,directory)
+       (unwind-protect (progn ,@body)
+         (cd old))))
+
+  (defun format-maxima-graph (maxima-output)
+    (let ((tex (replace-regexp-in-string
+                "[] ]+$" ""
+                (replace-regexp-in-string
+                 "^\\s-+" ""
+                 (car (reverse (split-string maxima-output "\n")))))))
+      (with-current-dir
+       (format "%s/images/" (file-name-directory (buffer-file-name)))
+       (shell-command
+        (format "latexmk -pdflatex='pdflatex -shell-escape -interaction nonstopmode' -pdf -f %s"
+                tex)))
+      (format "%s.pdf" (file-name-sans-extension tex))))
 #+END_SRC
 
 #+RESULTS:
-: by-backend
+: format-maxima-graph
 
 #+NAME: fname
 #+HEADER: :var f="dummy"
 #+BEGIN_SRC emacs-lisp :exports none
-  (format "\"%s/%s\"" (file-name-directory (buffer-file-name)) f)
+  (format "\"%s/images/%s\"" (file-name-directory (buffer-file-name)) f)
 #+END_SRC
 
 #+BEGIN_LATEX
-  \definecolor{codebg}{rgb}{0.96,0.99,0.8}
-  \lstnewenvironment{maxima}{%
-    \lstset{backgroundcolor=\color{codebg},
-      aboveskip=20pt,
-      showstringspaces=false,
-      frame=single,
-      framerule=0pt,
-      basicstyle=\ttfamily\scriptsize,
-      columns=fixed}}{}
-  }
-  \makeatletter
-  \newcommand{\verbatimfont}[1]{\renewcommand{\verbatim@font}{\ttfamily#1}}
-  \makeatother
-  \verbatimfont{\small}%
-  \clearpage
+\definecolor{codebg}{rgb}{0.96,0.99,0.8}
+\lstnewenvironment{maxima}{%
+  \lstset{backgroundcolor=\color{codebg},
+    escapeinside={(*@}{@*)},
+    aboveskip=20pt,
+    showstringspaces=false,
+    frame=single,
+    framerule=0pt,
+    basicstyle=\ttfamily\scriptsize,
+    columns=fixed}}{}
+}
+\makeatletter
+\newcommand{\verbatimfont}[1]{\renewcommand{\verbatim@font}{\ttfamily#1}}
+\makeatother
+\verbatimfont{\small}%
+\clearpage
 #+END_LATEX
 
 * Problems
@@ -99,20 +120,12 @@
 
     #+HEADER: :results raw file :exports results
     #+BEGIN_SRC emacs-lisp :var maxima-output=prob1(%out=fname(f="tangent_x.tex"))
-      (let ((tex (replace-regexp-in-string
-                  "[] ]+$" ""
-                  (replace-regexp-in-string
-                   "^\\s-+" ""
-                   (car (reverse (split-string maxima-output "\n")))))))
-        (shell-command
-         (format "latexmk -pdflatex='pdflatex -shell-escape -interaction nonstopmode' -pdf -f %s"
-                       tex))
-        (format "%s.pdf" (file-name-sans-extension tex)))
+      (format-maxima-graph maxima-output)
     #+END_SRC
 
     #+ATTR_LATEX: :width 0.9\textwidth
     #+RESULTS:
-    [[file:/home/wvxvw/Documents/uni/infinitesimal-calculus//tangent_x.pdf]]
+    [[file:/home/wvxvw/Documents/uni/infinitesimal-calculus//images/tangent_x.pdf]]
 
 *** Answer 2
     Both functions attain the same values at 0 and $\frac{\pi}{4}$.  But sine is
@@ -145,20 +158,12 @@
 
     #+HEADER: :results raw file :exports results
     #+BEGIN_SRC emacs-lisp :var maxima-output=prob2(%out=fname(f="abstangent_x.tex"))
-      (let ((tex (replace-regexp-in-string
-                  "[] ]+$" ""
-                  (replace-regexp-in-string
-                   "^\\s-+" ""
-                   (car (reverse (split-string maxima-output "\n")))))))
-        (shell-command
-         (format "latexmk -pdflatex='pdflatex -shell-escape -interaction nonstopmode' -pdf -f %s"
-                       tex))
-        (format "%s.pdf" (file-name-sans-extension tex)))
+      (format-maxima-graph maxima-output)
     #+END_SRC
 
     #+ATTR_LATEX: :width 0.9\textwidth
     #+RESULTS:
-    [[file:/home/wvxvw/Documents/uni/infinitesimal-calculus//abstangent_x.pdf]]
+    [[file:/home/wvxvw/Documents/uni/infinitesimal-calculus//images/abstangent_x.pdf]]
 
 ** Problem 2
    Let $f$, $g$ and $h$ be functions from $\mathbb{R}$ to $\mathbb{R}$.
@@ -312,9 +317,125 @@
       + By using Heine definition of limit (also given above).
 
 *** Answer 10
-    
-*** Answer 11
+   Recall the $\epsilon-\delta$ definition:
 
+   #+BEGIN_LATEX
+   \emph{The limit of $f(x)$ at $x_0$ is defined to be $L$ s.t. for every
+     $\epsilon > \abs{f(x) - L} > 0$ we can find $\delta > \abs{x - x_0} >
+     0$.}
+   #+END_LATEX
+
+   To negate this is to say that there exists such $\epsilon$ for which
+   we can't find a positive $\delta$ larger than the distance from $x$ to
+   $x_0$.
+
+   #+BEGIN_LATEX
+   \emph{Heine defines limit to be $L$ whenever for every sequence $(x_n)$ which
+     convergest to $x_0$, every sequence of function values $f(x_n)$ converges
+     to $L$.}
+   #+END_LATEX
+
+   To negate this definition we claim that there exists a sequence $(x_m)$,
+   which convergest to $x_0$, however $f(x_m)$ doesn't converge to $L$.
+
+*** Answer 11
+    I'll do the Heine first, because it's easier.  We can choose sequences
+    $(x_n) = -\frac{\pi}{2nx}$ and $(x_m) = \frac{\pi}{2mx}$, both are
+    immediately reducible to the limit of a fraction as $x$ approaches zero,
+    hence, the limit for both is zero.  Now, if we plug them back into $f$, we
+    get:
+
+    #+HEADER: :exports results
+    #+HEADER: :results (by-backend (pdf "latex") (t "raw"))
+    #+BEGIN_SRC latex
+      \begin{align*}
+        \lim_{x \to 0}\frac{x}{x - \lfloor \sin x \rfloor}
+        &= \lim_{x \to 0}\frac{x}{x - 0} \\
+        &\textit{$\lfloor \sin x \rfloor = 0$ whenever $0 < x < \frac{\pi}{2}$} \\
+        &= 1\;.
+      \end{align*}
+    #+END_SRC
+
+    Similarly:
+
+    #+HEADER: :exports results
+    #+HEADER: :results (by-backend (pdf "latex") (t "raw"))
+    #+BEGIN_SRC latex
+      \begin{align*}
+        \lim_{x \to 0}\frac{x}{x - \lfloor \sin x \rfloor} 
+        &= \lim_{x \to 0}\frac{x}{x + 1} \\
+        &\textit{$\lfloor \sin x \rfloor = -1$ whenever $0 > x > -\frac{\pi}{2}$} \\ 
+        &= 0\;.
+      \end{align*}
+    #+END_SRC
+
+    Now, the $\epsilon-\sigma$ approach:
+
+    Since we can pick arbitrary $\epsilon$, put $\epsilon = \frac{1}{2}$. Now, we
+    could try to find the limit withing $\pi$ distance from zero.  Assuming thus
+    $x \in (\pi, -\pi)$.
+    
+    #+HEADER: :exports results
+    #+HEADER: :results (by-backend (pdf "latex") (t "raw"))
+    #+BEGIN_SRC latex
+      \begin{align*}
+        -&\frac{1}{2}
+        < \frac{\sigma}{\sigma - \lfloor \sin \sigma \rfloor} - L
+        < \frac{1}{2} \\
+        -&\frac{1}{2} < \frac{\sigma}{\sigma - 0} - L < \frac{1}{2} \\
+        -&\frac{1}{2} < 1 - L < \frac{1}{2} \\
+        -&\frac{3}{2} < -L < -\frac{1}{2} \\
+         &\frac{3}{2} > L > \frac{1}{2} \\
+         &\textit{Similarly:} \\
+        -&\frac{1}{2}
+        < \frac{-\sigma}{\lfloor - \sin \sigma \rfloor -\sigma} - L
+        < \frac{1}{2}\\
+        -&\frac{1}{2} < \frac{-\sigma}{-\sigma + 1} - L < \frac{1}{2} \\
+        -&\frac{1}{2} - \frac{-\sigma}{-\sigma + 1} < -L
+        < \frac{1}{2} - \frac{-\sigma}{-\sigma + 1} \\
+        -&\frac{-\sigma + 1 + 2\sigma}{-2\sigma + 2}
+        < -L < \frac{1}{2} - \frac{-\sigma}{1 - \sigma} \\
+        -&\frac{1 + \sigma}{-2\sigma + 2} < -L
+        < \frac{1}{2} - \frac{-\sigma}{1 - \sigma} \\
+         &\frac{-1 - \sigma}{-2\sigma + 2} < -L
+        < \frac{1}{2} - \frac{-\sigma}{1 - \sigma} \\
+         &\frac{-1(1 + \sigma)}{-1(2\sigma - 2)} < -L
+        < \frac{1}{2} - \frac{-\sigma}{1 - \sigma} \\
+         &\frac{1 + \sigma}{2\sigma - 2} < -L
+        < \frac{1}{2} - \frac{-\sigma}{1 - \sigma} \\
+         &\textit{Since $\sigma > 0$} \\
+         &\frac{1 + \sigma}{2\sigma + 2} < -L
+        < \frac{1}{2} - \frac{-\sigma}{1 - \sigma} \\
+         &\frac{1}{2} < -L < \frac{1}{2} - \frac{-\sigma}{1 - \sigma} \\
+         &\textit{Contradiction: $L > \frac{1}{2}$ and $L < \frac{1}{2}$.}
+      \end{align*}
+    #+END_SRC
+
+    #+NAME: prob3
+    #+HEADER: :exports source
+    #+HEADER: :var %out=fname(f="nolimit.tex")
+    #+BEGIN_SRC maxima :results output raw
+      programmode: false;
+      gnuplot_pdf_command: %command;
+      print(plot2d (x / (x - floor(sin(x))),
+          [x, -2 * %pi, 2 * %pi], [y, -2, 2],
+          [gnuplot_pdf_term_command, 
+           "set term cairolatex standalone pdf size 16cm,10.5cm"],
+          [ylabel, "${\\displaystyle \\frac{x}{x - \\lfloor \\sin x \\rfloor}}$"],
+          [title, concat("${\\displaystyle \\lim_{x \\to 0}",
+                     "\\frac{x}{x - \\lfloor \\sin x \\rfloor}}$")],
+          [pdf_file, %out]));
+    #+END_SRC
+    
+    #+HEADER: :results raw file :exports results
+    #+BEGIN_SRC emacs-lisp :var maxima-output=prob3(%out=fname(f="nolimit.tex"))
+      (format-maxima-graph maxima-output)
+    #+END_SRC
+
+    #+RESULTS:
+    [[file:/home/wvxvw/Documents/uni/infinitesimal-calculus//images/nolimit.pdf]]
+
+   
 ** Problem 5
    Find limits of:
    1. $\lim_{x \to 0}\frac{1 - \cos x}{x \sin x}$.
