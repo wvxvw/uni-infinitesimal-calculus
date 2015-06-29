@@ -1,0 +1,162 @@
+% Created 2015-06-27 Sat 19:27
+\documentclass[a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{fixltx2e}
+\usepackage{graphicx}
+\usepackage{longtable}
+\usepackage{float}
+\usepackage{wrapfig}
+\usepackage{rotating}
+\usepackage[normalem]{ulem}
+\usepackage{amsmath}
+\usepackage{textcomp}
+\usepackage{marvosym}
+\usepackage{wasysym}
+\usepackage{amssymb}
+\usepackage{capt-of}
+\usepackage{hyperref}
+\tolerance=1000
+\usepackage[utf8]{inputenc}
+\usepackage[usenames,dvipsnames]{color}
+\usepackage{commath}
+\usepackage{tikz}
+\usetikzlibrary{shapes,backgrounds}
+\usepackage{marginnote}
+\usepackage{listings}
+\usepackage{color}
+\usepackage{enumerate}
+\hypersetup{urlcolor=blue}
+\hypersetup{colorlinks,urlcolor=blue}
+\setlength{\parskip}{16pt plus 2pt minus 2pt}
+\definecolor{codebg}{rgb}{0.96,0.99,0.8}
+\definecolor{codestr}{rgb}{0.46,0.09,0.2}
+\DeclareMathOperator{\Dom}{Dom}
+\allowdisplaybreaks[4]
+\author{Oleg Sivokon}
+\date{\textit{<2015-06-24 Wed>}}
+\title{Assignment 18, Infinitesimal Calculus}
+\hypersetup{
+ pdfauthor={Oleg Sivokon},
+ pdftitle={Assignment 18, Infinitesimal Calculus},
+ pdfkeywords={Infinitesimal Calculus, Assignment, Limits of functions},
+ pdfsubject={Fourth asssignment in the course Infinitesimal Calculus},
+ pdfcreator={Emacs 25.0.50.1 (Org mode 8.3beta)}, 
+ pdflang={English}}
+\begin{document}
+
+\maketitle
+\tableofcontents
+
+\definecolor{codebg}{rgb}{0.96,0.99,0.8}
+\lstnewenvironment{maxima}{%
+  \lstset{backgroundcolor=\color{codebg},
+    escapeinside={(*@}{@*)},
+    aboveskip=20pt,
+    showstringspaces=false,
+    frame=single,
+    framerule=0pt,
+    basicstyle=\ttfamily\scriptsize,
+    columns=fixed}}{}
+}
+\makeatletter
+\newcommand{\verbatimfont}[1]{\renewcommand{\verbatim@font}{\ttfamily#1}}
+\makeatother
+\verbatimfont{\small}%
+\clearpage
+
+\section{Problems}
+\label{sec:orgheadline15}
+
+\subsection{Problem 1}
+\label{sec:orgheadline2}
+Given \(P(x) = x^4 + a_4x^3 + a_3x^2 + a_2x + a_0\) is a polynomial with one
+non-zero real root, prove that it has at least one more real root.
+
+\subsubsection{Answer 1}
+\label{sec:orgheadline1}
+Since we are given \(P(x)\) has a root, let's call it \(r\), then from factor
+theorem we also know that there exists \((x - r)D(x) = P(x)\) where \(D(x)\) is
+a third degree polynomial with a non-zero leading coefficient.  According to
+fundamental theorem of calculus, each root must have a conjugate pair.
+Since third degree polynomial has three roots, then by pigeonhole principle,
+one of these roots is equal to its conjugate, which is why this root must be
+real.  Hence the original quadratic polynomial has at least one more real
+root (and four roots all in all).
+
+\subsection{Problem 2}
+\label{sec:orgheadline4}
+Let \(f\) be a function differentiable at \((a, b)\).  Let \(x_0 \in (a, b)\).
+Prove that there exists a sequence \((x_n)\) s.t. \(x_n \neq x_0\) for all \(n\),
+\(\lim_{n \to \infty}x_n = x_0\), \(\lim_{n \to \infty}f'(x_n) = f'(x_0)\).
+
+\subsubsection{Answer 2}
+\label{sec:orgheadline3}
+Let's pick \(x_0\).  From continuity of reals, we have that no matter where in
+\((a, b)\) \(x_0\) is, we can always find two intervlas \((a, x_0)\) and \((x_0,
+    b)\).  Let's pick a suitable derivative function.  For example, let \(f'(x) =
+    f'(x_0)\), i.e. a constant function.  Now we can construct the required
+sequence.  \((x_n) = x_0 - \frac{x_0 - a}{n + 2}\) meets our requirements.
+Since \(\lim_{n \to \infty}x_0 = x_0\) and \(\lim_{n \to \infty}\frac{x_0 -
+    a}{n + 2} = 0\).
+
+\subsection{Problem 3}
+\label{sec:orgheadline6}
+Let \(f\) be differenetiable at \([0, \frac{\pi}{2}]\) s.t. \(0 \leq f(x) \leq 1\) for
+all \(x\) in this interval.  Prove that there exists a point \(x\) in this interval
+such that \(f'(x) = \sin x\).
+
+\subsubsection{Answer 3}
+\label{sec:orgheadline5}
+From Lagrange mean value theorem we are guaranteed a point \(c\) s.t.
+\begin{align*}
+  f'(c) = \frac{f(a) - f(b)}{a - b}
+\end{align*}
+
+Put \(a = 0\), \(b = \frac{\pi}{2}\).  Then it follows that \(0 < f'(c) < 1\)
+since \(f(a) \geq a\) and \(f(b) \leq b\).  Since sine function is continuous at
+\([0, \frac{\pi}{2}]\) and it assumes all values in \([0, 1]\), then there must
+exist a point where \(\sin x = f'(c)\) by intermediate value theorem.
+
+\subsection{Problem 4}
+\label{sec:orgheadline10}
+\begin{enumerate}
+\item Prove that \(\sin x + \cos x \geq 1\) in the interval \([0, \frac{\pi}{2}]\),
+as well as in \([2\pi k, 2\pi k + \frac{\pi}{2}]\), where \(k\) is a natural
+number.
+\item Prove that \(f(x) = e^x \sin x\) isn't uniformly differentiable on \([0, \infty)\).
+\item Prove that \(f(x) = e^x \sin x\) is uniformly differentiable on \((-\infty, 0]\).
+\end{enumerate}
+
+\subsubsection{Answer 4}
+\label{sec:orgheadline7}
+The proof is immediate from \(\sin^2 x + \cos^2 x = 1\). Since \(\sin x \leq 1\)
+and \(\cos x \leq 1\), it follows that \(\sin x \geq \sin^2 x\), and similarly
+for cosine whenever both of them are positive.  Hence \(\sin x + \cos x \geq
+    1\).  Since both sine and cosine are periodical with the period equal to
+\(2\pi\), i.e. \(\sin x = \sin 2k\pi x\), it follows that \(\sin 2k\pi x + \cos
+    2k\pi x \geq 1\) for any natural \(k\).
+
+\subsubsection{Answer 5}
+\label{sec:orgheadline8}
+
+\subsubsection{Answer 6}
+\label{sec:orgheadline9}
+
+\subsection{Problem 5}
+\label{sec:orgheadline12}
+Let \(f\) be differentiable twice in interval \((a, b)\).  Let its second derivative
+be strictly positive.  Prove that for every two points in the interval it holds
+that \(f(x) \geq f(y) + f'(y)(x - y)\).
+
+\subsubsection{Answer 7}
+\label{sec:orgheadline11}
+
+\subsection{Problem 6}
+\label{sec:orgheadline14}
+Let \(f\) be continuous in \(\mathbb{R}\).  Prove that between every two local maxima
+of \(f\) there exists a local minimum point.
+
+\subsubsection{Answer 8}
+\label{sec:orgheadline13}
+\end{document}

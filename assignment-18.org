@@ -1,0 +1,168 @@
+# -*- fill-column: 80; org-confirm-babel-evaluate: nil -*-
+
+#+TITLE:     Assignment 18, Infinitesimal Calculus
+#+AUTHOR:    Oleg Sivokon
+#+EMAIL:     olegsivokon@gmail.com
+#+DATE:      <2015-06-24 Wed>
+#+DESCRIPTION: Fourth asssignment in the course Infinitesimal Calculus
+#+KEYWORDS: Infinitesimal Calculus, Assignment, Limits of functions
+#+LANGUAGE: en
+#+LaTeX_CLASS: article
+#+LATEX_CLASS_OPTIONS: [a4paper]
+#+LATEX_HEADER: \usepackage[usenames,dvipsnames]{color}
+#+LATEX_HEADER: \usepackage{commath}
+#+LATEX_HEADER: \usepackage{tikz}
+#+LATEX_HEADER: \usetikzlibrary{shapes,backgrounds}
+#+LATEX_HEADER: \usepackage{marginnote}
+#+LATEX_HEADER: \usepackage{listings}
+#+LATEX_HEADER: \usepackage{color}
+#+LATEX_HEADER: \usepackage{enumerate}
+#+LATEX_HEADER: \hypersetup{urlcolor=blue}
+#+LATEX_HEADER: \hypersetup{colorlinks,urlcolor=blue}
+#+LATEX_HEADER: \setlength{\parskip}{16pt plus 2pt minus 2pt}
+#+LATEX_HEADER: \definecolor{codebg}{rgb}{0.96,0.99,0.8}
+#+LATEX_HEADER: \definecolor{codestr}{rgb}{0.46,0.09,0.2}
+#+LATEX_HEADER: \DeclareMathOperator{\Dom}{Dom}
+#+LATEX_HEADER: \allowdisplaybreaks[4]
+
+#+BEGIN_SRC emacs-lisp :exports none
+  (setq org-latex-pdf-process
+          '("latexmk -pdflatex='pdflatex -shell-escape -interaction nonstopmode' -pdf -f %f")
+          org-latex-listings t
+          org-src-fontify-natively t
+          org-listings-escape-inside '("(*@" . "@*)")
+          org-latex-custom-lang-environments '((maxima "maxima"))
+          org-babel-latex-htlatex "htlatex")
+
+  (defmacro by-backend (&rest body)
+      `(cl-case (when (boundp 'backend) (org-export-backend-name backend))
+         ,@body))
+
+  (defmacro with-current-dir (directory &rest body)
+    `(let ((old default-directory))
+       (cd ,directory)
+       (unwind-protect (progn ,@body)
+         (cd old))))
+
+  (defun format-maxima-graph (maxima-output)
+    (let ((tex (replace-regexp-in-string
+                "[] ]+$" ""
+                (replace-regexp-in-string
+                 "^\\s-+" ""
+                 (car (reverse (split-string maxima-output "\n")))))))
+      (with-current-dir
+       (format "%s/images/" (file-name-directory (buffer-file-name)))
+       (shell-command
+        (format "latexmk -pdflatex='pdflatex -shell-escape -interaction nonstopmode' -pdf -f %s"
+                tex)))
+      (format "%s.pdf" (file-name-sans-extension tex))))
+#+END_SRC
+
+#+RESULTS:
+: format-maxima-graph
+
+#+NAME: fname
+#+HEADER: :var f="dummy"
+#+BEGIN_SRC emacs-lisp :exports none
+  (format "\"%s/images/%s\"" (file-name-directory (buffer-file-name)) f)
+#+END_SRC
+
+#+BEGIN_LATEX
+\definecolor{codebg}{rgb}{0.96,0.99,0.8}
+\lstnewenvironment{maxima}{%
+  \lstset{backgroundcolor=\color{codebg},
+    escapeinside={(*@}{@*)},
+    aboveskip=20pt,
+    showstringspaces=false,
+    frame=single,
+    framerule=0pt,
+    basicstyle=\ttfamily\scriptsize,
+    columns=fixed}}{}
+}
+\makeatletter
+\newcommand{\verbatimfont}[1]{\renewcommand{\verbatim@font}{\ttfamily#1}}
+\makeatother
+\verbatimfont{\small}%
+\clearpage
+#+END_LATEX
+
+* Problems
+
+** Problem 1
+   Given $P(x) = x^4 + a_4x^3 + a_3x^2 + a_2x + a_0$ is a polynomial with one
+   non-zero real root, prove that it has at least one more real root.
+
+*** Answer 1
+    Since we are given $P(x)$ has a root, let's call it $r$, then from factor
+    theorem we also know that there exists $(x - r)D(x) = P(x)$ where $D(x)$ is
+    a third degree polynomial with a non-zero leading coefficient.  According to
+    fundamental theorem of calculus, each root must have a conjugate pair.
+    Since third degree polynomial has three roots, then by pigeonhole principle,
+    one of these roots is equal to its conjugate, which is why this root must be
+    real.  Hence the original quadratic polynomial has at least one more real
+    root (and four roots all in all).
+
+** Problem 2
+   Let $f$ be a function differentiable at $(a, b)$.  Let $x_0 \in (a, b)$.
+   Prove that there exists a sequence $(x_n)$ s.t. $x_n \neq x_0$ for all $n$,
+   $\lim_{n \to \infty}x_n = x_0$, $\lim_{n \to \infty}f'(x_n) = f'(x_0)$.
+
+*** Answer 2
+    Let's pick $x_0$.  From continuity of reals, we have that no matter where in
+    $(a, b)$ $x_0$ is, we can always find two intervlas $(a, x_0)$ and $(x_0,
+    b)$.  Let's pick a suitable derivative function.  For example, let $f'(x) =
+    f'(x_0)$, i.e. a constant function.  Now we can construct the required
+    sequence.  $(x_n) = x_0 - \frac{x_0 - a}{n + 2}$ meets our requirements.
+    Since $\lim_{n \to \infty}x_0 = x_0$ and $\lim_{n \to \infty}\frac{x_0 -
+    a}{n + 2} = 0$.
+
+** Problem 3
+   Let $f$ be differenetiable at $[0, \frac{\pi}{2}]$ s.t. $0 \leq f(x) \leq 1$ for
+   all $x$ in this interval.  Prove that there exists a point $x$ in this interval
+   such that $f'(x) = \sin x$.
+
+*** Answer 3
+    From Lagrange mean value theorem we are guaranteed a point $c$ s.t.
+    #+HEADER: :exports results
+    #+HEADER: :results (by-backend (pdf "latex") (t "raw"))
+    #+BEGIN_SRC latex
+      \begin{align*}
+        f'(c) = \frac{f(a) - f(b)}{a - b}
+      \end{align*}
+    #+END_SRC
+    Put $a = 0$, $b = \frac{\pi}{2}$.  Then it follows that $0 < f'(c) < 1$
+    since $f(a) \geq a$ and $f(b) \leq b$.  Since sine function is continuous at
+    $[0, \frac{\pi}{2}]$ and it assumes all values in $[0, 1]$, then there must
+    exist a point where $\sin x = f'(c)$ by intermediate value theorem.
+
+** Problem 4
+   1. Prove that $\sin x + \cos x \geq 1$ in the interval $[0, \frac{\pi}{2}]$,
+      as well as in $[2\pi k, 2\pi k + \frac{\pi}{2}]$, where $k$ is a natural
+      number.
+   2. Prove that $f(x) = e^x \sin x$ isn't uniformly differentiable on $[0, \infty)$.
+   3. Prove that $f(x) = e^x \sin x$ is uniformly differentiable on $(-\infty, 0]$.
+
+*** Answer 4
+    The proof is immediate from $\sin^2 x + \cos^2 x = 1$. Since $\sin x \leq 1$
+    and $\cos x \leq 1$, it follows that $\sin x \geq \sin^2 x$, and similarly
+    for cosine whenever both of them are positive.  Hence $\sin x + \cos x \geq
+    1$.  Since both sine and cosine are periodical with the period equal to
+    $2\pi$, i.e. $\sin x = \sin 2k\pi x$, it follows that $\sin 2k\pi x + \cos
+    2k\pi x \geq 1$ for any natural $k$.
+
+*** Answer 5
+
+*** Answer 6
+
+** Problem 5
+   Let $f$ be differentiable twice in interval $(a, b)$.  Let its second derivative
+   be strictly positive.  Prove that for every two points in the interval it holds
+   that $f(x) \geq f(y) + f'(y)(x - y)$.
+
+*** Answer 7
+
+** Problem 6
+   Let $f$ be continuous in $\mathbb{R}$.  Prove that between every two local maxima
+   of $f$ there exists a local minimum point.
+
+*** Answer 8

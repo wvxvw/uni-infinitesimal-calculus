@@ -1,0 +1,354 @@
+% Created 2015-06-20 Sat 23:26
+\documentclass[a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{fixltx2e}
+\usepackage{graphicx}
+\usepackage{longtable}
+\usepackage{float}
+\usepackage{wrapfig}
+\usepackage{rotating}
+\usepackage[normalem]{ulem}
+\usepackage{amsmath}
+\usepackage{textcomp}
+\usepackage{marvosym}
+\usepackage{wasysym}
+\usepackage{amssymb}
+\usepackage{capt-of}
+\usepackage{hyperref}
+\tolerance=1000
+\usepackage[utf8]{inputenc}
+\usepackage[usenames,dvipsnames]{color}
+\usepackage{commath}
+\usepackage{tikz}
+\usetikzlibrary{shapes,backgrounds}
+\usepackage{marginnote}
+\usepackage{listings}
+\usepackage{color}
+\usepackage{enumerate}
+\hypersetup{urlcolor=blue}
+\hypersetup{colorlinks,urlcolor=blue}
+\setlength{\parskip}{16pt plus 2pt minus 2pt}
+\definecolor{codebg}{rgb}{0.96,0.99,0.8}
+\definecolor{codestr}{rgb}{0.46,0.09,0.2}
+\DeclareMathOperator{\Dom}{Dom}
+\allowdisplaybreaks[4]
+\author{Oleg Sivokon}
+\date{\textit{<2015-06-19 Fri>}}
+\title{Assignment 17, Infinitesimal Calculus}
+\hypersetup{
+ pdfauthor={Oleg Sivokon},
+ pdftitle={Assignment 17, Infinitesimal Calculus},
+ pdfkeywords={Infinitesimal Calculus, Assignment, Limits of functions},
+ pdfsubject={Fourth asssignment in the course Infinitesimal Calculus},
+ pdfcreator={Emacs 25.0.50.1 (Org mode 8.3beta)}, 
+ pdflang={English}}
+\begin{document}
+
+\maketitle
+\tableofcontents
+
+\definecolor{codebg}{rgb}{0.96,0.99,0.8}
+\lstnewenvironment{maxima}{%
+  \lstset{backgroundcolor=\color{codebg},
+    escapeinside={(*@}{@*)},
+    aboveskip=20pt,
+    showstringspaces=false,
+    frame=single,
+    framerule=0pt,
+    basicstyle=\ttfamily\scriptsize,
+    columns=fixed}}{}
+}
+\makeatletter
+\newcommand{\verbatimfont}[1]{\renewcommand{\verbatim@font}{\ttfamily#1}}
+\makeatother
+\verbatimfont{\small}%
+\clearpage
+
+\section{Problems}
+\label{sec:orgheadline17}
+
+\subsection{Problem 1}
+\label{sec:orgheadline3}
+\begin{enumerate}
+\item Compute
+\begin{align*}
+  \lim_{n \to \infty}\left(1 + \sqrt{n}\sin \frac{1}{n}\right)^{\sqrt{n}}
+\end{align*}
+
+\item Compute
+\begin{align*}
+  \lim_{x \to 0}\left(1 + \frac{1 - \cos x}{x}\right)^{\frac{1}{x}}
+\end{align*}
+\end{enumerate}
+
+\subsubsection{Answer 1}
+\label{sec:orgheadline1}
+At first step we can replace \(m = \sqrt{n}\).  This gives us:
+\begin{align*}
+  \lim_{n \to \infty}\left(1 + m\sin(m^{-2})\right)^m
+\end{align*}
+
+Now, notice that \(\lim_{n \to \infty} m = \infty\), and that the formula
+obtained is very similar to \(\lim_{b \to \infty}(1 + a)^b = e\), whre \(a\)
+tends to zero.  Now, if \(m\sin(m^{-2})\) tends to zero, we know the limit to
+be \(e\).  So, all we need to show is that \(\lim_{m \to \infty}m\sin(m^{-2}) =
+    0\).
+\begin{align*}
+  &\textit{Define support variable k} \\
+  &k = \frac{1}{m} \\
+  &\lim_{m \to \infty}m\sin(m^{-2}) = \\
+  &\lim_{k \to 0}\frac{\sin k^2}{k} = \\
+  &\textit{Using L'Hospital's rule} \\
+  &\lim_{k \to 0}\frac{(-\sin(k^2)) \cdot 2k}{1} = \\
+  &\textit{Sinus is defined and is continuous at 0, simply substitute} \\
+  &\lim_{k \to 0}\frac{0 \cdot 2 \cdot 0}{1} = 0\;.
+\end{align*}
+
+Since we showed \(\lim_{m \to \infty}m\sin(m^{-2}) = 0\), it follows that
+\(\lim_{n \to \infty}\left(1 +
+    \sqrt{n}\sin\left(\frac{1}{n}\right)\right)^{\sqrt{n}} = e\).
+
+\subsubsection{Answer 2}
+\label{sec:orgheadline2}
+Similar to the previous answer, we will at first define a helper variable:
+\(y = \frac{1}{x}\), then we will search for the solution of equivalent problem:
+\begin{align*}
+  &\lim_{y \to \infty} \left(1 + \frac{1 - \cos\left(\frac{1}{y}\right)}{\frac{1}{y}}\right)^y = \\
+  &\lim_{y \to \infty} \left(1 + y\left(1 - \cos\left(\frac{1}{y}\right)\right)\right)^y = \\
+  &\lim_{y \to \infty} \left(1 + 
+    y\left(1 - \cos\left(\frac{1}{y}\right)\right)\right)^{
+    \frac{1}{y(1 - \cos(\frac{1}{y}))}\cdot y^2(1 - \cos(\frac{1}{y}))} = \\
+  &\lim_{y \to \infty}e^{y^2(1 - \cos(\frac{1}{y}))}
+\end{align*}
+
+Now, since the limit of the exponent is the exponent of the limits, we may
+limit ourselves to finding the limit of \(y^2(1 - \cos(\frac{1}{y}))\).
+Again, define a helper variable \(z = \frac{1}{y}\) and search for the limit as \(z\)
+approaches zero:
+\begin{align*}
+  &\lim_{z \to 0} \frac{1 - \cos(z)}{z^2} = \\
+  &\textit{Using L'Hospital} \\
+  &\lim_{z \to 0} \frac{\sin(z)}{2z} = \\
+  &\textit{Using L'Hospital again} \\
+  &\lim_{z \to 0} \frac{\cos(z)}{2} = \\
+  &\textit{Cosine is defined at 0 and is continuous, substituting} \\
+  &\lim_{z \to 0} \frac{1}{2} = \frac{1}{2}\;.
+\end{align*}
+
+Substituting the intermediate result back gives: \(e^{\frac{1}{2}} = \sqrt{e}\).
+
+\subsection{Problem 2}
+\label{sec:orgheadline7}
+Let \(f(x) = e^{-x} + \cos x\).
+\begin{enumerate}
+\item Prove \(\lim_{n \to \infty}f(\pi + 2\pi n) = -1\).
+\item Prove \(\inf f([0, \infty)) = -1\).
+\item Prove that for all \(-1 < c < 2\) there exists a solution for \(f(x) = c\) in
+\([0, \infty)\).
+\end{enumerate}
+
+\subsubsection{Answer 3}
+\label{sec:orgheadline4}
+Limit of the sum is the sum of the limits, hence:
+\begin{align*}
+  &\lim_{x \to 0} e^{-x} + \cos x = \\
+  & \lim_{x \to 0} e^{-x} + \lim_{x \to 0} \cos x = \\
+  &\textit{Regardless of how we sample x, since $e^{-x}$ is monotonicaly decreasing} \\
+  &0 + \lim_{x \to 0} \cos x = \\
+  &\textit{Since cosine is continuous everywhere substituting} \\
+  &\lim_{x \to 0} \cos(\pi + 2\pi n) = -1\;.
+\end{align*}
+
+\subsubsection{Answer 4}
+\label{sec:orgheadline5}
+The proof amounts to showing that \(e^{-x}\) is monotonically decreasing, and
+has its infimum at zero.  Since infimum of cosine is at \(-1\), this would complete
+the proof.  (Recall that the sum of infima of two functions is no less then
+their sum.)  To show that \(e^{-x}\) is monotonically decreasing, and thus must
+be bounded from below by its limit we claim that for any \(x_0 < x_1\) it is also
+the case that \(e^{-x_0} > e^{-x_1}\) (the clame we made without a proof in the
+previous answer.)  But this is immediate from definition of exponentiation.
+Therfore the proof is complete.
+
+\subsubsection{Answer 5}
+\label{sec:orgheadline6}
+The sum of two continuous functions is continuous, therefore \(f\) is
+continuous in the same range where \(e^{-x}\) and cosine are continuous, and
+in particular in the range \((-1, 2)\).  By intermediate value theorem, we are
+guaranteed that \(f\) attains the value \(c\) in the specified range if we can
+show that it is defined at the edges.  In the previous answers we found that
+\(f\) has a limit point at \(-1\), in other words, we can make it as close to
+\(-1\) as we like.  Solving for \(c = 2\) is tricky, but we can pick a larger
+value, without harming the claim, for example, pick \(x = -\frac{\pi}{2}\).
+This gives \(e^{\frac{\pi}{2}} + \cos(\frac{\pi}{2}) = e^{\frac{\pi}{2}} + 0
+    > 4 > 2\).
+
+\subsection{Problem 3}
+\label{sec:orgheadline10}
+\begin{enumerate}
+\item Prove \(\lim_{n \to \infty}(\ln(2\pi n + \frac{\pi}{2}) - \ln(2\pi n)) = 0\).
+\item Prove that \(f(x) = \sin(e^x)\) is not uniformly continuous.
+\end{enumerate}
+
+\subsubsection{Answer 6}
+\label{sec:orgheadline8}
+Using the properties of \(ln\), viz. \(ln(x) - ln(y) = ln(x / y)\) obtains:
+\begin{align*}
+  &\lim_{n \to \infty} \left(\ln(2\pi n + \frac{\pi}{2}) - \ln(2\pi n)\right) = \\
+  &\lim_{n \to \infty} \ln\left(\frac{2\pi n + \frac{\pi}{2}}{2\pi n}\right) = \\
+  &\textit{Using limit of function composition} \\
+  &\ln\left(\lim_{n \to \infty} \frac{2\pi n + \frac{\pi}{2}}{2\pi n}\right) = \\
+  &\textit{Using L'Hospital's rule} \\
+  &\ln\left(\lim_{n \to \infty} \frac{2\pi}{2\pi}\right) = \\
+  &\ln(1) = 0\;.
+\end{align*}
+
+\subsubsection{Answer 7}
+\label{sec:orgheadline9}
+We are going to use the definition of uniform continuity which requires that
+if a limit of a difference of two sequences is equal to zero, then the limit
+of the difference of sequences of function's values at these sequences must
+be zero too.
+
+Let \((x_n) = \ln(n + 2)\) and \((y_n) = \ln(n)\).  The proof of the limit of
+their difference being equal to zero is identical to the one given in the
+previous answer.
+
+Now consider these two sequences \((x_{f(n)}) = e^{\ln(n + 2)}\) and
+\((y_{f(n)}) = e^{\ln(n)}\).  From definition of uniform continuity, it
+follows that:
+
+\(\lim_{n \to \infty}\left(e^{\ln(n + 2)} - e^{\ln(n)}\right) = 0\) too.
+
+\begin{align*}
+  &\lim_{n \to \infty}\left(e^{\ln(n + 2)} - e^{\ln(n)}\right) = \\
+  &\textit{Since $e^{\ln(x)} = x$} \\
+  &\lim_{n \to \infty}\left(n + 2 - n\right) = 2\;.
+\end{align*}
+
+Contrary to assumed.  Hence \(f(x) = e^x\) is not uniformly continuous.
+
+\subsection{Problem 4}
+\label{sec:orgheadline11}
+For all functions given below find their domain of definition, domain of
+continuity, and domain of differentiability.  Find a definition for every
+point in the differentiability domain \emph{(I have no idea what this is supposed
+to mean)}.
+\begin{enumerate}
+\item \begin{align*}
+  f(x) = \begin{cases}
+    x^2 \sin \frac{1}{x^2} &\mbox{if} x \neq 0 \\
+    0                      &\mbox{if} x = 0\;.
+  \end{cases}
+\end{align*}
+
+\item \(f'(x)\) for \(f\) defined in previous question.
+\item \begin{align*}
+  f(x) = x^2D(x) = \begin{cases}
+    x^2 &\mbox{if} x \in \mathbb{Q} \\
+    0   &\mbox{if} x \not \in \mathbb{Q}\;.
+  \end{cases}
+\end{align*}
+\end{enumerate}
+
+\subsection{Problem 5}
+\label{sec:orgheadline14}
+Prove that:
+\begin{enumerate}
+\item \begin{align*}
+  \lim_{x \to 0^-}\frac{e^{\frac{1}{x}}}{x} = 0\;.
+\end{align*}
+
+\item Prove that the function:
+\begin{align*}
+  f(x) = \begin{cases}
+    e^{\frac{1}{x}} + \sin x &\mbox{if } x < 0 \\
+    \ln(1 + x)             &\mbox{if } x \geq 0
+  \end{cases}
+\end{align*}
+
+is differentiable at 0.
+\end{enumerate}
+
+\subsubsection{Answer 8}
+\label{sec:orgheadline12}
+Define helper variable \(y = \frac{1}{x}\), then we need to solve an equivalent
+problem: \(\lim_{y \to \infty}\frac{1}{ye^{y}}\).  But the solution is immediate
+since \(e^n \geq 1\) whenever \(n > 0\).  In other words, this is:
+\(\lim_{y \to \infty}\frac{1}{y \cdot 1} = 0\).
+
+\subsubsection{Answer 9}
+\label{sec:orgheadline13}
+To show that \(f\) is differentiable we need to show that both limits exist and
+that they agree at 0, furthermore, that the limits are finite.  In other words:
+\begin{align*}
+  &\lim_{x \to 0^-}\left(e^{\frac{1}{x}} + \sin x\right) = \lim_{x \to 0^+}\ln(1 + x) \\
+  &\textit{Logarithm is continuous at 1, substituting value for x:} \\
+  &\lim_{x \to 0^-}\left(e^{\frac{1}{x}} + \sin x\right) = 0 \\
+  &\lim_{x \to 0^-}\left(e^{\frac{1}{x}}\right) + \lim_{x \to 0^-}\left(\sin x\right) = 0 \\
+  &\textit{Sine is continuous at 0, substituting value for x:} \\
+  &\lim_{x \to 0^-}\left(e^{\frac{1}{x}}\right) + 0 = 0\;.
+\end{align*}
+
+In order to find the later limit, we could define a helper variable: \(y = \frac{1}{x}\)
+and solve an equivalent problem:
+\begin{align*}
+  &\lim_{y \to \infty}\left(\frac{1}{e^y}\right) = 0
+\end{align*}
+
+Since \(e^y\) is monotonically increasing and has no upper bound.
+
+Having showed that, we showed that both left and right limits exist and that they
+agree at 0, hence \(f\) is differentiable at 0.
+
+\subsection{Problem 6}
+\label{sec:orgheadline16}
+Let \(f\) be continuous at \(x_0\).  Prove that \(g(x) = \abs{x}f(x)\) is
+differentiable if and only if \(f(0) = 0\).
+
+
+\subsubsection{Answer 10}
+\label{sec:orgheadline15}
+The intuition for the proof is that additive identity in an ordered field is
+unique in that it is the only positive number, which doesn't preserve sign
+under multiplication.  In other words, since the derivatives of absolute value
+function for number less than zero and for number greater than zero differ
+only in sign, the only way to ignore this discrepancy is to multiply them
+by zero.  A more formal proof follows:
+
+First, we will prove the ``if'' part, i.e. if \(f(0) = 0\), then \(g\) is
+differentiable.
+\begin{align*}
+  &\lim_{h \to 0}\frac{g(0 + h) - g(0)}{h}\cdot f(h) \;\textit{where}\; g(h) = \abs{h} \\
+  &\lim_{h \to 0}\frac{\abs{0 + h} - \abs{0}}{h} \cdot g(h) = 
+  \lim_{h \to 0}\frac{\abs{h}}{h} \cdot g(h) \\
+  &\textit{Assume}\; h > 0 \;\textit{then} \\
+  &\lim_{h \to 0^+}\frac{\abs{h}}{h} = 1 \cdot g(h) \\
+  &\textit{Assume}\; f(h) = 0 \;\textit{then} \\
+  &\lim_{h \to 0^+} 1 \cdot 0 = 0 \\
+  &\textit{else} \\
+  &\lim_{h \to 0^-}\frac{\abs{h}}{h} = -1 \\
+  &\textit{Assume}\; f(h) = 0\; \textit{then, similarly} \\
+  &\lim_{h \to 0^-} -1 \cdot 0 = 0 \\
+  &0 = 0\;.
+\end{align*}
+
+Since both limits exists and agree, \(g\) is differentiable.
+
+Now, we will prove the ``only if'' part.  Suppose, for contradiction there
+existed some value, we define it later to be \(y \neq 0\), exists, such that
+\(g\) would be differentiable at 0:
+\begin{align*}
+  &\textit{Assume}\; \lim_{h \to 0^+} \frac{\abs{h}}{h} \cdot f(0) =
+  \lim_{h \to 0^-} \frac{\abs{h}}{h} \cdot f(0) \\
+  &\lim_{h \to 0^+} 1 \cdot f(0) = \lim_{h \to 0^-} -1 \cdot f(0) \\
+  &\lim_{h \to 0^+} f(0) = -\lim_{h \to 0^-} f(0) \\
+  &\textit{Since $f$ is continuous, its value at 0 is its limit at 0} \\
+  &\textit{Put $f(0) = y, y \neq 0$ then}\\
+  &-y = y\; \textit{Contradiction!}
+\end{align*}
+
+Even though both limits exist, they don't agree, hence whenever \(g\) is not
+differentiable, \(f(0) \neq 0\).
+\end{document}
